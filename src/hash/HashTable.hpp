@@ -33,7 +33,7 @@ public:
     data[hash(key)] = value;
   }
 
-  auto get(std::string const &key) -> const
+  auto get(std::string const &key) -> T
   {
     return data[hash(key)];
   }
