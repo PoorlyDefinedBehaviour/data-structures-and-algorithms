@@ -101,16 +101,6 @@ public:
     return result;
   }
 
-  Matrix<T> operator*(Vector3D const &other)
-  {
-    Matrix<T> new_matrix(3, 1);
-    new_matrix[0][0] = other.x;
-    new_matrix[1][0] = other.y;
-    new_matrix[2][0] = other.z;
-
-    return *this * new_matrix;
-  }
-
   void operator*=(T value)
   {
     *this = *this * value;

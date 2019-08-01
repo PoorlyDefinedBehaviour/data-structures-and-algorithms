@@ -5,7 +5,7 @@ namespace utils
 static auto binary_search = [](auto const &array, size_t start, size_t end, auto const &element) -> size_t {
   if (end >= start)
   {
-    int mid = start + (end - start) / 2;
+    size_t mid = start + (end - start) / 2;
 
     if (array[mid] == element)
       return mid;

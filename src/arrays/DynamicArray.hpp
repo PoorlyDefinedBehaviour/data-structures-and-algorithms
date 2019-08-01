@@ -17,7 +17,7 @@ private:
 public:
   auto length() const -> size_t { return size; }
   auto is_empty() const -> bool { return length() == 0; }
-  auto raw() -> T * { return data; }
+  auto raw() -> T * { return data.get(); }
   auto first() -> T & { return data[0]; }
   auto last() -> T & { return data[size - 1]; }
   auto first_copy() const -> T { return data[0]; }
