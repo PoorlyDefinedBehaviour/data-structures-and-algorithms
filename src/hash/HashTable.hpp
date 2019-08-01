@@ -40,10 +40,6 @@ public:
 
   auto includes(T const &value) -> bool
   {
-    for (size_t i = 0; i < size; ++i)
-      if (data[i] == value)
-        return true;
-
-    return false;
+    return data.includes(value);
   }
 };
