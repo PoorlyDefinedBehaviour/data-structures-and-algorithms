@@ -147,20 +147,9 @@ public:
   }
 
   // O(1)
-  constexpr auto insert(T const &value) -> void
+  constexpr auto insert(T &&value) -> void
   {
-    ++size;
-
-    if (_head == nullptr)
-    {
-      _tail = _head = std::make_shared<Node<T>>(value);
-    }
-    else
-    {
-      auto node = std::make_shared<Node<T>>(value);
-      _tail->next = node;
-      _tail = node;
-    }
+    insert_at(size, std::forward<T>(value));
   }
 
   // O(n)

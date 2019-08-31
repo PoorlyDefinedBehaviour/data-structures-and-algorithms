@@ -18,7 +18,7 @@
         "isDefault": true
       },
       "problemMatcher": "$gcc",
-      "command": "g++ -ggdb -std=c++1z -Wall -Wextra -Wpedantic src/*.cpp -o main.exe && main.exe"
+      "command": "g++ -ggdb -std=c++2a -Wall -Wextra -Wpedantic src/*.cpp -o main.exe && main.exe"
     }
   ]
 }
