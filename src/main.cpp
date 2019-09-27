@@ -3,15 +3,20 @@
 //#include "../tests/LinkedList.test.hpp"
 //#include "../tests/DoubleLinkedList.test.hpp"
 //#include "../tests/CircularDoubleLinkedList.test.hpp"
-#include "./abstract/Date.hpp"
+//#include "./abstract/Date.hpp"
+//#include "./trees/BinarySearchTree.hpp"
+#include "../tests/BinarySearchTree.hpp"
+#include <functional>
 
 auto main() -> int
 {
-  //linked_list_test_suite::start();
-  //doubledlinkedlist_test_suite::start();
-  //circulardoublelinkedlist_test_suite::start();
-  Date a(1, 1, 1);
-  Date b(1, 1, 1);
+  //binary_search_tree_test_suite::start();
+  BinarySearchTree<int> tree;
+  tree.insert(10).insert(20);
 
-  std::cout << Date::to_milliseconds(Date::now());
+  tree.remove(20).remove(10);
+
+  tree.insert(50);
+
+  std::cout << "tree.size() " << tree.size() << '\n';
 }

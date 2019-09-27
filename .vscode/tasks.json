@@ -8,7 +8,7 @@
         "kind": "build",
         "isDefault": true
       },
-      "command": ".\\build.bat"
+      "command": "g++ -ggdb -std=c++2a -Wall -Wextra -Wpedantic src/*.cpp -o main.exe"
     },
     {
       "label": "Build & run C++ project",

@@ -47,7 +47,9 @@
     "ratio": "cpp",
     "unordered_map": "cpp",
     "xhash": "cpp",
-    "xtree": "cpp"
+    "xtree": "cpp",
+    "functional": "cpp",
+    "optional": "cpp"
   },
   "terminal.integrated.shell.windows": "cmd.exe"
 }
