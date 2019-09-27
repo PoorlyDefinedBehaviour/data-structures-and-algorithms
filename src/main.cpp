@@ -12,11 +12,13 @@ auto main() -> int
 {
   //binary_search_tree_test_suite::start();
   BinarySearchTree<int> tree;
-  tree.insert(10).insert(20);
+  tree.insert(10)
+      .insert(5)
+      .insert(25);
 
-  tree.remove(20).remove(10);
+  tree.remove(5);
 
-  tree.insert(50);
+  std::cout << tree;
 
   std::cout << "tree.size() " << tree.size() << '\n';
 }
