@@ -2,94 +2,25 @@
 
 #include <memory>
 #include <stdexcept>
-#include <utility>
 
 template <typename T>
-class LinkedList;
-
-template <typename T>
-class Node
+struct Node
 {
-private:
   T data;
   std::shared_ptr<Node<T>> next = nullptr;
 
-  friend class LinkedList<T>;
-
-  // O(n)
-  template <typename Fn>
-  constexpr auto traverse(Fn const &fn) -> void
-  {
-    fn(*this);
-
-    if (next)
-      next->traverse(std::forward<decltype(fn)>(fn));
-  }
-
-  // O(n)
-  auto insert_at(size_t current_index, size_t target_index, T const &value) -> void
-  {
-    if (current_index + 1 == target_index)
-    {
-      auto temp = next;
-      next = std::make_shared<Node<T>>(value);
-      next->next = temp;
-    }
-    else
-    {
-      next->insert_at(current_index + 1, target_index, value);
-    }
-  }
-
-  // O(n)
-  constexpr auto remove_at(size_t current_index, size_t target_index) -> void
-  {
-    if (current_index + 1 == target_index)
-      next = std::move(next->next);
-    else
-      next->remove_at(current_index + 1, target_index);
-  }
-
-  // O(n)
-  constexpr auto remove(T &&value) -> void
-  {
-    if (value == next->data)
-      next = std::move(next->next);
-    else
-      next->remove(std::forward<T>(value));
-  }
-
-  // O(n)
-  constexpr auto find(T &&value) -> std::shared_ptr<Node<T>>
-  {
-    if (data == value)
-      return std::shared_ptr<Node<T>>(this);
-
-    if (next != nullptr)
-      return next->find(std::forward<T>(value));
-
-    return nullptr;
-  }
-
-  // O(n)
-  constexpr auto at(size_t current_index, size_t target_index) const -> std::shared_ptr<Node<T>>
-  {
-    if (current_index + 1 == target_index)
-      return next;
-    return next->at(current_index + 1, target_index);
-  }
-
-public:
   constexpr Node(const T &value) : data(value) {}
-
-  constexpr auto get_data() const -> T { return data; }
-  constexpr auto is_last() const -> bool { return next == nullptr; }
 };
 
 template <typename T>
 class LinkedList
 {
 private:
+  std::shared_ptr<Node<T>> _head = nullptr;
+  std::shared_ptr<Node<T>> _tail = nullptr;
+
+  size_t size = 0;
+
   constexpr auto assert_index_is_valid(size_t index) const -> void
   {
     if (index < 0 || index > size)
@@ -104,10 +35,80 @@ private:
     }
   }
 
-  std::shared_ptr<Node<T>> _head = nullptr;
-  std::shared_ptr<Node<T>> _tail = nullptr;
+  template <typename Function>
+  constexpr auto find_impl(std::shared_ptr<Node<T>> const &node, Function const &comparator) -> std::shared_ptr<Node<T>>
+  {
+    if (node == nullptr)
+    {
+      return nullptr;
+    }
+    if (comparator(node->data))
+    {
+      return node;
+    }
+    return find_impl(node->next, comparator);
+  }
 
-  size_t size = 0;
+  constexpr auto insert_at_impl(size_t index, T const &value) -> void
+  {
+    if (_head == nullptr)
+    {
+      _head = std::make_shared<Node<T>>(value);
+      _tail = _head;
+      return;
+    }
+    if (index == 0)
+    {
+      auto temp = _head;
+      _head = std::make_shared<Node<T>>(value);
+      _head->next = temp;
+      return;
+    }
+    if (index == size - 1)
+    {
+      auto temp = _tail;
+      _tail = std::make_shared<Node<T>>(value);
+      temp->next = _tail;
+      return;
+    }
+
+    size_t current_index = 0;
+
+    std::shared_ptr<Node<T>> current = _head;
+    while (current_index + 1 != index)
+    {
+      current = current->next;
+    }
+
+    auto temp = current->next;
+    current->next = std::make_shared<Node<T>>(value);
+    current->next->next = temp;
+  }
+
+  constexpr auto remove_at_impl(size_t index) -> void
+  {
+    std::shared_ptr<Node<T>> current = _head;
+    size_t current_index = 0;
+    while (current_index + 1 == index)
+    {
+      current = current->next;
+      ++current_index;
+    }
+
+    current->next = std::move(current->next->next);
+  }
+
+  constexpr auto at(size_t index) const -> std::shared_ptr<Node<T>>
+  {
+    std::shared_ptr<Node<T>> current = _head;
+    size_t current_index = 0;
+    while (current_index + 1 == index)
+    {
+      current = current->next;
+      ++current_index;
+    }
+    return current->next;
+  }
 
 public:
   constexpr auto length() const -> size_t { return size; }
@@ -117,33 +118,9 @@ public:
   constexpr auto insert_at(size_t index, T const &value) -> void
   {
     assert_index_is_valid(index);
-
     ++size;
 
-    if (_head == nullptr)
-    {
-      _head = std::make_shared<Node<T>>(value);
-      _tail = _head;
-      return;
-    }
-
-    if (index == 0)
-    {
-      auto temp = _head;
-      _head = std::make_shared<Node<T>>(value);
-      _head->next = temp;
-      return;
-    }
-
-    if (index == size - 1)
-    {
-      auto temp = _tail;
-      _tail = std::make_shared<Node<T>>(value);
-      temp->next = _tail;
-      return;
-    }
-
-    _head->insert_at(0, index, value);
+    insert_at_impl(index, value);
   }
 
   // O(1)
@@ -155,9 +132,8 @@ public:
   // O(n)
   constexpr auto remove_at(size_t index) -> void
   {
-    --size;
-
     assert_index_is_valid(index);
+    --size;
 
     if (index == 0)
     {
@@ -168,15 +144,8 @@ public:
     }
     else
     {
-      _head->remove_at(0, index);
+      remove_at_impl(index);
     }
-  }
-
-  // O(n)
-  constexpr auto remove(T &&value) -> void
-  {
-    _head->remove(std::forward<T>(value));
-    --size;
   }
 
   // O(1)
@@ -218,38 +187,46 @@ public:
   }
 
   // O(n)
-  constexpr auto find(T &&value) const -> std::shared_ptr<Node<T>>
+  template <typename Function>
+  constexpr auto find(Function const &comparator) -> std::shared_ptr<Node<T>>
   {
-    if (!_head)
-      return nullptr;
-
-    return _head->find(std::forward<T>(value));
+    return find_impl(_head, comparator);
   }
 
   // O(n)
-  constexpr auto at(size_t index) const -> std::shared_ptr<Node<T>>
+  template <typename Function>
+  constexpr auto find_index(Function const &comparator) -> size_t
   {
-    assert_index_is_valid(index);
-
-    if (index == 0)
-      return _head;
-    if (index == size - 1)
-      return _tail;
-
-    return _head->at(0, index);
+    size_t current_index = 0;
+    std::shared_ptr<Node<T>> current = _head;
+    while (current != nullptr)
+    {
+      if (comparator(current->data))
+      {
+        return current_index;
+      }
+      current = current->next;
+      ++current_index;
+    }
+    return -1;
   }
 
   // O(n)
-  constexpr auto includes(T &&value) const -> bool
+  constexpr auto includes(T const &value) const -> bool
   {
-    return static_cast<bool>(find(std::forward<T>(value)));
+    return find([&value](auto const &v) -> bool { return v == value; }) != nullptr;
   }
 
-  // O(n)
-  template <typename Fn>
-  constexpr auto traverse(Fn const &fn) -> void
+  template <typename Function>
+  constexpr auto traverse(Function const &fn) -> void
   {
-    _head->traverse(std::forward<decltype(fn)>(fn));
+    std::shared_ptr<Node<T>> current = _head;
+    fn(current);
+    while (current->next != nullptr)
+    {
+      current = current->next;
+      fn(current);
+    }
   }
 
   // O(1)

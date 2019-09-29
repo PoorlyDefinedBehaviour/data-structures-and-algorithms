@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../utils/Quicksort.hpp"
+#include "../utils/Print.hpp"
 
 template <typename T, size_t size>
 class StaticArray

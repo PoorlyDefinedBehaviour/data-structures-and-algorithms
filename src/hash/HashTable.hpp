@@ -1,45 +1,71 @@
 #pragma once
 
+#include "../lists/LinkedList.hpp"
 #include "../arrays/StaticArray.hpp"
-
 #include <string>
-#include <stdexcept>
+#include <vector>
+#include <iostream>
 
-/**
- * No buckets because i'm lazy
- */
-template <typename T, size_t size>
+template <typename T>
+struct Entry
+{
+  std::string key;
+  T data;
+};
+
+template <typename T>
 class HashTable
 {
 private:
-  StaticArray<T, size> data;
+  static size_t const size = 10000;
+  StaticArray<LinkedList<Entry<T>>, size> entries;
 
   auto hash(std::string const &key) const -> size_t
   {
     size_t buffer = 0;
     for (auto c : key)
     {
-      buffer += (size_t)c;
+      buffer = buffer * 37 + (size_t)c;
     }
-
     return buffer % size;
   }
 
 public:
   auto capacity() const -> size_t { return size; }
 
-  auto set(std::string const &key, T const &value) -> void
+  auto set(std::string const &key, T const &value) -> HashTable<T> &
   {
-    data[hash(key)] = value;
+    auto &list = entries[hash(key)];
+    list.insert({key, value});
+    return *this;
   }
 
-  auto get(std::string const &key) -> T
+  auto get(std::string const &key) -> T const &
   {
-    return data[hash(key)];
+    auto list = entries[hash(key)];
+    auto element = list.find([&key](auto const &node) -> bool { return node.key == key; });
+    if (element == nullptr)
+    {
+      throw std::logic_error("No element with specified key was found");
+    }
+    return element->data.data;
   }
 
-  auto includes(T const &value) -> bool
+  auto remove(std::string const &key) -> HashTable<T> &
   {
-    return data.includes(value);
+    auto &list = entries[hash(key)];
+    size_t index = list.find_index([&key](auto const &node) -> bool { return node.key == key; });
+    if (index != -1)
+    {
+      list.remove_at(index);
+    }
+    return *this;
+  }
+
+  auto has(std::string const &key) -> bool
+  {
+    auto list = entries[hash(key)];
+
+    return !list.is_empty() && list.find([&key](auto const &node) -> bool { return node.key == key; }) != nullptr;
   }
 };

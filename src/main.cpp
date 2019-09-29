@@ -5,20 +5,18 @@
 //#include "../tests/CircularDoubleLinkedList.test.hpp"
 //#include "./abstract/Date.hpp"
 //#include "./trees/BinarySearchTree.hpp"
-#include "../tests/BinarySearchTree.hpp"
-#include <functional>
+//#include "../tests/BinarySearchTree.hpp"
+#include "./hash/HashTable.hpp"
 
 auto main() -> int
 {
-  //binary_search_tree_test_suite::start();
-  BinarySearchTree<int> tree;
-  tree.insert(10)
-      .insert(5)
-      .insert(25);
+  HashTable<int> hash_table;
+  hash_table.set("test", 10);
+  hash_table.set("test1", 20);
+  std::cout << "hash_table.has('test') " << std::boolalpha << hash_table.has("test") << '\n';
+  std::cout << "hash_table.has('test1') " << std::boolalpha << hash_table.has("test1") << '\n';
 
-  tree.remove(5);
-
-  std::cout << tree;
-
-  std::cout << "tree.size() " << tree.size() << '\n';
+  hash_table.remove("test");
+  std::cout << "hash_table.has('test') " << std::boolalpha << hash_table.has("test") << '\n';
+  std::cout << "hash_table.has('test1') " << std::boolalpha << hash_table.has("test1") << '\n';
 }
