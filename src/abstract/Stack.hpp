@@ -6,7 +6,7 @@ template <typename T>
 class Stack
 {
 private:
-  Array<T> elements;
+  DynamicArray<T> elements;
 
 public:
   auto size() -> size_t { return elements.length(); }

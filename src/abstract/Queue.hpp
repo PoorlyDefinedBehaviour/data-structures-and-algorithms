@@ -6,7 +6,7 @@ template <typename T>
 class Queue
 {
 private:
-  Array<T> elements;
+  DynamicArray<T> elements;
 
 public:
   auto length() -> size_t { return elements.length(); }

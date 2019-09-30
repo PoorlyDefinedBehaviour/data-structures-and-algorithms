@@ -17,7 +17,7 @@ template <typename T>
 class HashTable
 {
 private:
-  static size_t const size = 10000;
+  static size_t constexpr size = 10000;
   StaticArray<LinkedList<Entry<T>>, size> entries;
 
   auto hash(std::string const &key) const -> size_t
@@ -25,7 +25,7 @@ private:
     size_t buffer = 0;
     for (auto c : key)
     {
-      buffer = buffer * 37 + (size_t)c;
+      buffer = buffer * 37 + static_cast<size_t>(c);
     }
     return buffer % size;
   }

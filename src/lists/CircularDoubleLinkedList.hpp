@@ -5,110 +5,14 @@
 #include <utility>
 
 template <typename T>
-class CircularDoubleLinkedList;
-
-template <typename T>
-class Node
+struct Node
 {
-private:
   T data;
 
   std::shared_ptr<Node<T>> previous = nullptr;
   std::shared_ptr<Node<T>> next = nullptr;
 
-  friend class CircularDoubleLinkedList<T>;
-
-  // O(n)
-  template <typename Fn>
-  constexpr auto right_traverse(Fn const &fn, size_t index, size_t size) const -> void
-  {
-    if (index == size)
-      return;
-
-    fn(*this);
-
-    if (next)
-      next->right_traverse(std::forward<decltype(fn)>(fn), index + 1, size);
-  }
-
-  // O(n)
-  template <typename Fn>
-  constexpr auto left_traverse(Fn const &fn, size_t index, size_t size) const -> void
-  {
-    if (index == size)
-      return;
-
-    fn(*this);
-
-    if (previous)
-      previous->left_traverse(std::forward<decltype(fn)>(fn), index + 1, size);
-  }
-
-  // O(n)
-  auto insert_at(size_t current_index, size_t target_index, T const &value) -> void
-  {
-    if (current_index + 1 == target_index)
-    {
-      auto temp = next;
-      next = std::make_shared<Node<T>>(value);
-      next->next = temp;
-    }
-    else
-    {
-      next->insert_at(current_index + 1, target_index, value);
-    }
-  }
-
-  // O(n)
-  constexpr auto remove_at(size_t current_index, size_t target_index) -> void
-  {
-    if (current_index + 1 == target_index)
-      next = std::move(next->next);
-    else
-      next->remove_at(current_index + 1, target_index);
-  }
-
-  // O(n)
-  constexpr auto remove(T &&value, size_t index, size_t size) -> void
-  {
-    if (!next || index == size)
-      return;
-
-    if (value == next->data)
-      next = std::move(next->next);
-    else
-      next->remove(std::forward<T>(value), 0, size);
-  }
-
-  // O(n)
-  constexpr auto find(T &&value, size_t index, size_t size) -> std::shared_ptr<Node<T>>
-  {
-    if (data == value)
-      return std::shared_ptr<Node<T>>(this);
-
-    if (index == size)
-      return nullptr;
-
-    if (next != nullptr)
-      return next->find(std::forward<T>(value), index + 1, size);
-
-    return nullptr;
-  }
-
-  // O(n)
-  constexpr auto at(size_t current_index, size_t target_index) const -> std::shared_ptr<Node<T>>
-  {
-    if (current_index + 1 == target_index)
-      return next;
-    return next->at(current_index + 1, target_index);
-  }
-
-public:
   constexpr Node(const T &value) : data(value) {}
-
-  constexpr auto get_data() const -> T { return data; }
-  constexpr auto has_next() const -> bool { return next != nullptr; }
-  constexpr auto has_previous() const -> bool { return previous != nullptr; }
 };
 
 template <typename T>
@@ -169,21 +73,33 @@ public:
 
     if (index == size - 1)
     {
-      auto temp = _tail;
-      _tail = std::make_shared<Node<T>>(value);
-      _tail->previous = temp;
-      temp->next = _tail;
-      _tail->next = _head;
+      std::shared_ptr<Node<T>> node = std::make_shared<Node<T>>(value);
+      node->next = _head;
+      _tail->next = node;
+      _tail = node;
+
       return;
     }
 
-    _head->insert_at(0, index, value);
+    std::shared_ptr<Node<T>> current = _head;
+    size_t current_index = 0;
+    while (current_index + 1 != index)
+    {
+      _head = _head->next;
+      ++current_index;
+    }
+
+    std::shared_ptr<Node<T>> node = std::make_shared<Node<T>>(value);
+    node->next = current->next;
+    node->previous = current;
+    current->next->previous = node;
+    current->next = node;
   }
 
   // O(1)
-  constexpr auto insert(T &&value) -> void
+  constexpr auto insert(T const &value) -> void
   {
-    insert_at(size, std::forward<T>(value));
+    insert_at(size, value);
   }
 
   // O(n)
@@ -200,21 +116,23 @@ public:
       if (size == 0)
         _tail = _head;
     }
+    else if (index == size)
+    {
+      _tail = _tail->previous;
+      _tail->next = _head;
+    }
     else
     {
-      _head->remove_at(0, index);
+      std::shared_ptr<Node<T>> current = _head;
+      size_t current_index = 0;
+      while (current_index + 1 != index)
+      {
+        current = current->next;
+        ++current_index;
+      }
+      current->next = current->next->next;
+      current->next->previous = current;
     }
-  }
-
-  // O(n)
-  constexpr auto remove(T &&value) -> void
-  {
-    if (value == _tail->get_data())
-      _tail = _tail->previous;
-    else
-      _head->remove(std::forward<T>(value), 0, size);
-
-    --size;
   }
 
   // O(1)
@@ -229,12 +147,18 @@ public:
   }
 
   // O(n)
-  constexpr auto find(T &&value) const -> std::shared_ptr<Node<T>>
+  template <typename Function>
+  constexpr auto find(Function const &fn) const -> std::shared_ptr<Node<T>>
   {
-    if (!_head)
-      return nullptr;
-
-    return _head->find(std::forward<T>(value), 0, size);
+    std::shared_ptr<Node<T>> current = _head;
+    size_t index = 0;
+    while (current && index != size - 1)
+    {
+      fn(current);
+      current = current->next;
+      ++index;
+    }
+    return current;
   }
 
   // O(n)
@@ -242,32 +166,48 @@ public:
   {
     assert_index_is_valid(index);
 
-    if (index == 0)
-      return _head;
-    if (index == size - 1)
-      return _tail;
-
-    return _head->at(0, index);
+    std::shared_ptr<Node<T>> current = _head;
+    size_t current_index = 0;
+    while (current_index != index)
+    {
+      current = current->next;
+      ++current_index;
+    }
+    return current;
   }
 
   // O(n)
-  constexpr auto includes(T &&value) const -> bool
+  constexpr auto includes(T const &value) const -> bool
   {
-    return static_cast<bool>(find(std::forward<T>(value)));
+    return find(value) != nullptr;
   }
 
   // O(n)
   template <typename Fn>
   constexpr auto left_traverse(Fn const &fn) -> void
   {
-    _head->left_traverse(std::forward<decltype(fn)>(fn), 0, size);
+    std::shared_ptr<Node<T>> current = _head;
+    size_t index = 0;
+    while (current && index != size)
+    {
+      fn(current);
+      current = current->previous;
+      ++index;
+    }
   }
 
   // O(n)
   template <typename Fn>
   constexpr auto right_traverse(Fn const &fn) -> void
   {
-    _head->right_traverse(std::forward<decltype(fn)>(fn), 0, size);
+    std::shared_ptr<Node<T>> current = _head;
+    size_t index = 0;
+    while (current && index != size)
+    {
+      fn(current);
+      current = current->next;
+      ++index;
+    }
   }
 
   // O(1)
@@ -280,11 +220,8 @@ public:
 template <typename T>
 auto operator<<(std::ostream &stream, CircularDoubleLinkedList<T> list) -> std::ostream &
 {
-  list.right_traverse([&stream](auto node) -> void {
-    stream << node.get_data();
-
-    if (node.has_next())
-      stream << " <-> ";
+  list.right_traverse([&stream](auto const &node) -> void {
+    stream << node->data << " <-> ";
   });
 
   return stream;

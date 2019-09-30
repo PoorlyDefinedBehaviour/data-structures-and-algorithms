@@ -158,14 +158,12 @@ public:
   }
 
   template <typename lambda>
-  auto reduce(const lambda &fn) -> T
+  auto reduce(const lambda &fn, T initial_value) -> T
   {
-    T accum;
-
     for (size_t i = 0; i < size; ++i)
-      accum = fn(accum, data[i]);
+      initial_value = fn(initial_value, data[i]);
 
-    return accum;
+    return initial_value;
   }
 
   template <typename lambda>
