@@ -5,22 +5,15 @@
 //#include "./abstract/Date.hpp"
 //#include "./trees/BinarySearchTree.hpp"
 //#include "../tests/BinarySearchTree.hpp"
-#include "./hash/HashTable.hpp"
+//#include "./hash/HashTable.hpp"
 //#include "./lists/DoubleLinkedList.hpp"
 //#include "./lists/CircularDoubleLinkedList.hpp"
+#include "./trees/HuffmanTree.hpp"
 
 auto main() -> int
 {
-  struct S
-  {
-    int data;
-  };
+  auto [codeTable, encodedString] = Huffman::encode("hello world!");
+  std::cout << encodedString << '\n';
 
-  HashTable<S> table;
-  table.set("one", S{1});
-  table.set("two", S{2});
-  table.set("three", S{3});
-  table.set("four", S{4});
-
-  std::cout << table.get("three").data << '\n';
+  std::cout << Huffman::decode(codeTable, encodedString) << '\n';
 }
