@@ -56,15 +56,16 @@ private:
     return nodes;
   }
 
-  static auto createTreeFromFrequencyTable(std::unordered_map<char, int> frequencyTable, std::vector<std::shared_ptr<Node>> &nodes) -> std::shared_ptr<Node>
+  static auto createTreeFromFrequencyTable(std::unordered_map<char, int> &frequencyTable,
+                                           std::vector<std::shared_ptr<Node>> &nodes) -> std::shared_ptr<Node>
   {
     std::shared_ptr<Node> root;
 
     while (nodes.size() > 1)
     {
       auto [firstElement, secondElement] = popFirstTwoElements(nodes);
-
       auto frequency = frequencyTable[firstElement->character] + frequencyTable[secondElement->character];
+
       auto newNode = std::make_shared<Node>('$', frequency);
       newNode->left = firstElement;
       newNode->right = secondElement;
@@ -80,11 +81,11 @@ private:
     return nodes.empty() ? root : nodes[0];
   }
 
-  static auto createTreeFromCodeTable(std::unordered_map<char, std::string> codeTable) -> std::shared_ptr<Node>
+  static auto createTreeFromCodeTable(std::unordered_map<char, std::string> const &codeTable) -> std::shared_ptr<Node>
   {
     std::shared_ptr<Node> root = std::make_shared<Node>('$', -1);
 
-    for (auto [key, code] : codeTable)
+    for (auto const &[key, code] : codeTable)
     {
       std::shared_ptr<Node> currentNode = root;
 
@@ -165,7 +166,7 @@ private:
     return std::make_tuple(first, second);
   }
 
-  static auto translateToCode(std::unordered_map<char, std::string> codeTable, std::string_view text) -> std::string
+  static auto translateToCode(std::unordered_map<char, std::string> &codeTable, std::string_view text) -> std::string
   {
     std::string result = "";
 
@@ -202,7 +203,7 @@ public:
     return std::make_tuple(codeTable, encoded);
   }
 
-  static auto decode(std::unordered_map<char, std::string> codeTable, std::string_view text) -> std::string
+  static auto decode(std::unordered_map<char, std::string> const &codeTable, std::string_view text) -> std::string
   {
     std::string result = "";
     std::shared_ptr<Node> treeRoot = createTreeFromCodeTable(codeTable);
