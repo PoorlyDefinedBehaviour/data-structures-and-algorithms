@@ -51,7 +51,21 @@
     "functional": "cpp",
     "optional": "cpp",
     "deque": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "atomic": "cpp",
+    "bit": "cpp",
+    "*.tcc": "cpp",
+    "cctype": "cpp",
+    "clocale": "cpp",
+    "cstdarg": "cpp",
+    "ctime": "cpp",
+    "cwctype": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "random": "cpp",
+    "string_view": "cpp",
+    "fstream": "cpp",
+    "sstream": "cpp"
   },
   "terminal.integrated.shell.windows": "cmd.exe"
 }
