@@ -2,11 +2,12 @@ using System;
 
 namespace lists
 {
-  public class LinkedList<T>
+  public class DoubleLinkedList<T>
   {
     private class Node
     {
       public T data;
+      public Node previous = null;
       public Node next = null;
 
       public Node(T data)
@@ -15,54 +16,60 @@ namespace lists
       }
     }
 
-    private int size = 0;
     private Node _head = null;
+    private int size = 0;
 
-    public int length()
-    {
-      return size;
-    }
-
-    public LinkedList<T> insert(T value)
+    public int length() { return size; }
+    public DoubleLinkedList<T> insert(T value)
     {
       if (_head is null)
       {
         _head = new Node(value);
+        size += 1;
         return this;
       }
 
       Node current = _head;
-
       while (current.next != null)
       {
         current = current.next;
       }
-      current.next = new Node(value);
 
-      size += 1;
+      current.next = new Node(value);
+      current.next.previous = current;
+
       return this;
     }
 
-    public LinkedList<T> remove_if(Func<T, bool> predicate)
+    public DoubleLinkedList<T> remove_if(Func<T, bool> predicate)
     {
       if (predicate(_head.data))
       {
         _head = _head.next;
+        _head.next.previous = _head;
         size -= 1;
         return this;
       }
 
-      Node current = _head;
 
+      Node current = _head;
       while (current.next != null)
       {
-        if (predicate(current.data))
+        if (predicate(current.next.data))
         {
-          current.next = current.next.next;
+          if (current.next.next != null)
+          {
+            current.next = current.next.next;
+            current.next.previous = current;
+          }
+          else
+          {
+            current.next = null;
+          }
+          Console.WriteLine("here1");
           size -= 1;
           return this;
         }
-
         current = current.next;
       }
 
@@ -76,13 +83,9 @@ namespace lists
       while (current != null)
       {
         if (predicate(current.data))
-        {
           return current.data;
-        }
-
         current = current.next;
       }
-
       return default(T);
     }
 
@@ -91,5 +94,4 @@ namespace lists
       return find_if((v) => v.Equals(value)).Equals(value);
     }
   }
-
 }
