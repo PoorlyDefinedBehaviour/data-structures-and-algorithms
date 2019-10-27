@@ -25,6 +25,8 @@ namespace lists
 
     public LinkedList<T> insert(T value)
     {
+      size += 1;
+
       if (_head is null)
       {
         _head = new Node(value);
@@ -39,7 +41,6 @@ namespace lists
       }
       current.next = new Node(value);
 
-      size += 1;
       return this;
     }
 

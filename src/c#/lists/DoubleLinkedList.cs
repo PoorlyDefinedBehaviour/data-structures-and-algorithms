@@ -22,10 +22,11 @@ namespace lists
     public int length() { return size; }
     public DoubleLinkedList<T> insert(T value)
     {
+      size += 1;
+
       if (_head is null)
       {
         _head = new Node(value);
-        size += 1;
         return this;
       }
 
