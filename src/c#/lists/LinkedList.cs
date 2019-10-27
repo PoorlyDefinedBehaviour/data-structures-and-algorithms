@@ -18,11 +18,8 @@ namespace lists
     private int size = 0;
     private Node _head = null;
 
-    public int length()
-    {
-      return size;
-    }
-
+    public int length() => size;
+   
     public LinkedList<T> insert(T value)
     {
       size += 1;

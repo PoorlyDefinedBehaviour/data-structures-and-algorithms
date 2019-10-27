@@ -19,7 +19,7 @@ namespace lists
     private Node _head = null;
     private int size = 0;
 
-    public int length() { return size; }
+    public int length() => size;
     public DoubleLinkedList<T> insert(T value)
     {
       size += 1;
