@@ -8,7 +8,7 @@
         "kind": "build",
         "isDefault": true
       },
-      "command": "g++ -ggdb -std=c++2a -Wall -Wextra -Wpedantic src/*.cpp -o main.exe"
+      "command": "g++ -ggdb -std=c++2a -Wall -Wextra -Wpedantic src/cpp/*.cpp -o main.exe"
     },
     {
       "label": "Build & run C++ project",
@@ -18,7 +18,7 @@
         "isDefault": true
       },
       "problemMatcher": "$gcc",
-      "command": "g++-9 -ggdb -std=c++2a -fmodules -Wall -Wextra -Wpedantic src/*.cpp -o main && ./main"
+      "command": "g++-9 -ggdb -std=c++2a -fmodules -Wall -Wextra -Wpedantic src/cpp/*.cpp -o main && ./main"
     }
   ]
 }
