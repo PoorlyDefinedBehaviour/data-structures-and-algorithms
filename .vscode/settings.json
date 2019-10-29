@@ -67,5 +67,11 @@
     "fstream": "cpp",
     "sstream": "cpp"
   },
-  "terminal.integrated.shell.windows": "cmd.exe"
+  "terminal.integrated.shell.windows": "cmd.exe",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  }
 }
