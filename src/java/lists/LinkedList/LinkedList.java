@@ -1,6 +1,8 @@
 package lists.LinkedList;
 
+import java.util.ArrayList;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class LinkedList<T> {
   private class Node {
@@ -17,8 +19,7 @@ public class LinkedList<T> {
 
   private void assert_index_is_valid(final int index) {
     if (index < 0 || index > length())
-      throw new RuntimeException("Invalid index: " + index);
-
+    throw new RuntimeException(String.format("Invalid index at insert_at(%d, T)", index));
   }
 
   public int length() {
@@ -71,6 +72,7 @@ public class LinkedList<T> {
         current.next = current.next.next;
         return this;
       }
+      current = current.next;
     }
 
     throw new RuntimeException("Object not found at LinkedList.remove()");
@@ -121,5 +123,17 @@ public class LinkedList<T> {
     current.next.next = temp;
 
     return this;
+  }
+
+  public Stream<T> to_stream() {
+    ArrayList<T> list = new ArrayList<T>(length());
+
+    Node current = _head;
+    while (current != null) {
+      list.add(current.data);
+      current = current.next;
+    }
+
+    return list.stream();
   }
 }

@@ -1,14 +1,26 @@
-import lists.LinkedList.*;
+
+import lists.DoubleLinkedList.*;
 
 public class Main {
   public static void main(String[] args) {
-    System.out.println("hello world");
-    LinkedList<Integer> list = new LinkedList<Integer>();
+    DoubleLinkedList<Integer> list = new DoubleLinkedList<Integer>();
 
-    list.insert(10).insert(20).insert(30).insert(40).insert(50);
+    list.insert(10)
+      .insert(20)
+      .insert(30)
+      .insert(40)
+      .insert(50);
 
-    System.out.println("list.length() " + list.length());
-    System.out.println("list.find_if(number -> number == 30) " + list.find_if(number -> number == 30));
-    System.out.println("list.find_index(number -> number == 30) " + list.find_index(number -> number == 30));
+    list.insert_at(3, 33);
+
+    System.out.println(String.format("list.length(): %d", list.length()));
+
+    list.remove(10);
+
+    System.out.println(String.format("list.length(): %d", list.length()));
+
+    list.to_stream()
+      .map(number -> number * 2)
+      .forEach(number -> System.out.println(number));
   }
 }
