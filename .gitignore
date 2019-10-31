@@ -3,3 +3,4 @@ bin/
 main
 *.class
 *.deb
+*.class
