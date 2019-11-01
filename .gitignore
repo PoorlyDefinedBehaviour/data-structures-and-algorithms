@@ -4,3 +4,4 @@ main
 *.class
 *.deb
 *.class
+node_modules
