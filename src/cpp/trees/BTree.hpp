@@ -26,20 +26,24 @@ private:
         : parent(parent) {}
   };
 
+  static constexpr int EQUAL = 0;
+  static constexpr int LESS = -1;
+  static constexpr int GREATER = 1;
+
   Comparator comparator = [](auto const &lhs, auto const &rhs) -> int {
     if (lhs < rhs)
-      return -1;
+      return LESS;
     if (lhs > rhs)
-      return 1;
-    return 0;
+      return GREATER;
+    return EQUAL;
   };
 
   std::shared_ptr<Page> _root = std::make_shared<Page>();
   int _height = 0;
 
-  auto is_equal(T const &lhs, T const &rhs) const -> bool { return comparator(lhs, rhs) == 0; }
-  auto is_less_than(T const &lhs, T const &rhs) const -> bool { return comparator(lhs, rhs) == -1; }
-  auto is_greater_than(T const &lhs, T const &rhs) const -> bool { return comparator(lhs, rhs) == 1; }
+  auto is_equal(T const &lhs, T const &rhs) const -> bool { return comparator(lhs, rhs) == EQUAL; }
+  auto is_less_than(T const &lhs, T const &rhs) const -> bool { return comparator(lhs, rhs) == LESS; }
+  auto is_greater_than(T const &lhs, T const &rhs) const -> bool { return comparator(lhs, rhs) == GREATER; }
   auto is_greater_than_or_equal(T const &lhs, T const &rhs) const -> bool { return is_greater_than(lhs, rhs) || is_equal(lhs, rhs); }
 
   auto is_full(Children const &children) const -> bool { return children.size() > 2 * M + 1; }
