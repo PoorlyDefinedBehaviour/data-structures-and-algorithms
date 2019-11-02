@@ -1,6 +1,5 @@
 #include <iostream>
 #include <type_traits>
-#include <utility>
 //#include "../tests/LinkedList.test.hpp"
 //#include "../tests/CircularDoubleLinkedList.test.hpp"
 //#include "./abstract/Date.hpp"
@@ -11,6 +10,7 @@
 //#include "./lists/CircularDoubleLinkedList.hpp"
 //#include "./trees/HuffmanTree.hpp"
 //#include "./trees/AvlTree.hpp"
+#include "./trees/BTree.hpp"
 
 /*
 template <typename T>
@@ -22,34 +22,21 @@ auto add_two_sfinae(T value,
 
 */
 
-template <typename T>
-constexpr auto is_hashable(T value) -> bool
-{
-  try
-  {
-    to_string(value);
-    return true;
-  }
-  catch (const std::exception &e)
-  {
-    return false;
-  }
-}
-
-template <typename T, [[maybe_unused]] typename std::enable_if<is_hashablevalue>::type *_ = nullptr>
-struct S
-{
-  T data;
-  S(T const &data)
-      : data(data) {}
-};
-
 template <typename... Ts>
-auto println(Ts &&... args) -> void { (std::cout << ... << std::forward<Ts>(args...)) << '\n'; }
+auto println(Ts const &... args) -> void { (std::cout << ... << args) << '\n'; }
 
 auto main() -> int
 {
-  S test("hello world!");
-  S s(test);
-  println(s.data);
+  println("hello world");
+  BTree<int, 2> tree;
+  tree.insert(10)
+      .insert(20)
+      .insert(30)
+      .insert(40)
+      .insert(50)
+      .insert(60)
+      .insert(70);
+
+  println("tree.height() ", tree.height());
+  tree.print(tree.root());
 }

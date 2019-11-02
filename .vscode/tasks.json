@@ -18,8 +18,8 @@
         "isDefault": true
       },
       "problemMatcher": "$gcc",
-      //"command": "g++-9 -ggdb -std=c++2a -fmodules -Wall -Wextra -Wpedantic src/cpp/*.cpp -o main && ./main"
-      "command": "javac src/java/Main.java && java src/java/Main.class"
+      "command": "g++-9 -ggdb -std=c++2a -fmodules -Wall -Wextra -Wpedantic src/cpp/*.cpp -o main && ./main"
+      //"command": "javac src/java/Main.java && java src/java/Main.class"
     }
   ]
 }
