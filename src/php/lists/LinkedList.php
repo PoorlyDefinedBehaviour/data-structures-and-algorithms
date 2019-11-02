@@ -13,23 +13,61 @@ class LinkedList {
   private ?Node $_head = null;
   private int $_length = 0;
 
+  private function assert_index_is_valid(int $index): void {
+    if($index < 0 || $index > $this->_length)
+      throw new Exception("Invalid index '{$index}' at LinkedList.insert_at");
+  }
+
   public function head() { return $this->_head->data; }
   public function length(): int { return $this->_length; }
 
   public function insert($value): LinkedList {
+    return $this->insert_at($this->_length, $value);
+  }
+
+  public function insert_at(int $index, $value): LinkedList {
+    $this->assert_index_is_valid($index);
+
     $this->_length += 1;
 
-    if(!$this->_head){
+    if($index === 0){
+      $temp = $this->_head;
       $this->_head = new Node($value);
+      $this->_head->next = $temp;
       return $this;
     }
 
     $current_node = $this->_head;
-    while($current_node->next){
+    $current_index = 0;
+    while($current_index + 1!== $index){
       $current_node = $current_node->next;
+      $current_index += 1;
     }
 
+    $temp = $current_node->next;
     $current_node->next = new Node($value);
+    $current_node->next->next = $temp;
+    return $this;
+  }
+
+  public function remove_at(int $index): LinkedList {
+    $this->assert_index_is_valid($index);
+
+    $this->_length -= 1;
+
+    if($index === 0){
+      $this->_head = $this->_head->next;
+      return $this;
+    }
+
+    $current_node = $this->_head;
+    $current_index = 0;
+    while($current_index + 1!== $index){
+      $current_node = $current_node->next;
+      $current_index += 1;
+    }
+
+    $current_node->next = $current_node->next ? $current_node->next->next : null;
 
     return $this;
   }
@@ -51,7 +89,7 @@ class LinkedList {
        $current_node = $current_node->next;
      }
     
-     throw new Exception("value '{$vaue}' not found at LinkedList.remove");
+     throw new Exception("value '{$value}' not found at LinkedList.remove");
   }
 
   public function find($value) {
@@ -68,6 +106,20 @@ class LinkedList {
     }
 
     return null;
+  }
+
+  public function find_index(Closure $predicate): int {
+    $current_node = $this->_head;
+    $current_index = 0;
+
+    while($current_node){
+      if($predicate($current_node->data))
+        return $current_index;
+      $current_node = $current_node->next;
+      $current_index += 1;
+    }
+
+    return -1;
   }
 
   public function remove_if(Closure $predicate): LinkedList {
