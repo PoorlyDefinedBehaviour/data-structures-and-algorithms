@@ -21,6 +21,19 @@ class LinkedList {
   public function head() { return $this->_head->data; }
   public function length(): int { return $this->_length; }
 
+  public function at($index) {
+    $this->assert_index_is_valid($index);
+
+    $current_node = $this->_head;
+    $current_index = 0;
+    while($current_index !== $index){
+      $current_node = $current_node->next;
+      $current_index += 1;
+    }
+
+    return $current_node->data;
+  }
+
   public function insert($value): LinkedList {
     return $this->insert_at($this->_length, $value);
   }
@@ -39,7 +52,7 @@ class LinkedList {
 
     $current_node = $this->_head;
     $current_index = 0;
-    while($current_index + 1!== $index){
+    while($current_index + 1 !== $index){
       $current_node = $current_node->next;
       $current_index += 1;
     }
@@ -93,7 +106,7 @@ class LinkedList {
   }
 
   public function find($value) {
-    return $this->find_if(function($v) { return $v === $value; });
+    return $this->find_if(function($v) use(&$value) { return $v === $value; });
   }
 
   public function find_if(Closure $predicate) {
@@ -109,8 +122,8 @@ class LinkedList {
   }
 
   public function find_index(Closure $predicate): int {
-    $current_node = $this->_head;
     $current_index = 0;
+    $current_node = $this->_head;
 
     while($current_node){
       if($predicate($current_node->data))
@@ -119,11 +132,12 @@ class LinkedList {
       $current_index += 1;
     }
 
-    return -1;
+    $NOT_FOUND_INDEX = -1;
+    return $NOT_FOUND_INDEX;
   }
 
   public function remove_if(Closure $predicate): LinkedList {
-    if($predicate($this->_head->data)){
+    if($this->_head && $predicate($this->_head->data)){
       $this->_head = $this->_head->next;
       $this->_length -= 1;
       return $this;
@@ -168,11 +182,11 @@ class LinkedList {
   }
 
   public function reduce(Closure $reducer) {
-    $result;
+    $result = null;
 
     $current_node = $this->_head;
-    while($current_node){
-      $result = $reducer($result, $current->node->data);
+    while($current_node) {
+      $result = $reducer($result, $current_node->data);
       $current_node = $current_node->next;
     }
 
