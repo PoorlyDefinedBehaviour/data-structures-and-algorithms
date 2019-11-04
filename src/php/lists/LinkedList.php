@@ -15,6 +15,8 @@ class LinkedList {
   private  ? Node $_head = null;
   private int $_length = 0;
 
+  private int $a = 10;
+
   private function assert_index_is_valid(int $index) : void {
     if ($index < 0 || $index > $this->_length) {
       throw new \Exception("Invalid index '{$index}' at LinkedList.insert_at");
@@ -89,7 +91,7 @@ class LinkedList {
   }
 
   public function remove($value): LinkedList {
-    if ($this->_head->data === $value) {
+    if ($this->_head && $this->_head->data === $value) {
       $this->_head = $this->_head->next;
       $this->_length -= 1;
       return $this;
@@ -105,7 +107,7 @@ class LinkedList {
       $current_node = $current_node->next;
     }
 
-    throw new Exception("value '{$value}' not found at LinkedList.remove");
+    throw new \Exception("value '{$value}' not found at LinkedList.remove");
   }
 
   public function find($value) {

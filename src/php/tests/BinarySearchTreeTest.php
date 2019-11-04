@@ -6,27 +6,27 @@ require_once "src/trees/BinarySearchTree.php";
 use PHPUnit\Framework\TestCase;
 use Trees\BinarySearchTree\BinarySearchTree;
 
-$bst_comparator = function ($lhs, $rhs) {
-  if ($lhs < $rhs) {
-    return -1;
-  }
-
-  if ($lhs > $rhs) {
-    return 1;
-  }
-
-  return 0;
-};
-
 final class BinarySearchTreeTest extends TestCase {
+  private function bst_comparator($lhs, $rhs): int {
+    if ($lhs < $rhs) {
+      return -1;
+    }
+
+    if ($lhs > $rhs) {
+      return 1;
+    }
+
+    return 0;
+  }
+
   public function test_height(): void {
-    $tree = new BinarySearchTree($GLOBALS["bst_comparator"]);
+    $tree = new BinarySearchTree(\Closure::fromCallable([$this, "bst_comparator"]));
 
     $this->assertEquals(0, $tree->height());
   }
 
   public function test_is_empty(): void {
-    $tree = new BinarySearchTree($GLOBALS["bst_comparator"]);
+    $tree = new BinarySearchTree(\Closure::fromCallable([$this, "bst_comparator"]));
 
     $this->assertEquals(true, $tree->is_empty());
 
@@ -36,7 +36,7 @@ final class BinarySearchTreeTest extends TestCase {
   }
 
   public function test_insert(): void {
-    $tree = new BinarySearchTree($GLOBALS["bst_comparator"]);
+    $tree = new BinarySearchTree(\Closure::fromCallable([$this, "bst_comparator"]));
 
     $tree->insert(10)
       ->insert(20)
@@ -47,7 +47,7 @@ final class BinarySearchTreeTest extends TestCase {
   }
 
   public function test_remove(): void {
-    $tree = new BinarySearchTree($GLOBALS["bst_comparator"]);
+    $tree = new BinarySearchTree(\Closure::fromCallable([$this, "bst_comparator"]));
 
     $tree->insert(10)
       ->insert(20)
@@ -66,7 +66,7 @@ final class BinarySearchTreeTest extends TestCase {
   }
 
   public function test_min(): void {
-    $tree = new BinarySearchTree($GLOBALS["bst_comparator"]);
+    $tree = new BinarySearchTree(\Closure::fromCallable([$this, "bst_comparator"]));
 
     $tree->insert(10)
       ->insert(20)
@@ -79,7 +79,7 @@ final class BinarySearchTreeTest extends TestCase {
   }
 
   public function test_max(): void {
-    $tree = new BinarySearchTree($GLOBALS["bst_comparator"]);
+    $tree = new BinarySearchTree(\Closure::fromCallable([$this, "bst_comparator"]));
 
     $tree->insert(10)
       ->insert(20)

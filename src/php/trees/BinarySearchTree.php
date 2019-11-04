@@ -104,7 +104,7 @@ class BinarySearchTree {
   }
 
   private function max_node_with_parent(?Node $parent, ?Node $node): array{
-    return !$node->right ? [$parent, $node] : $this->max_node($node, $noode->right);
+    return !$node->right ? [$parent, $node] : $this->max_node_with_parent($node, $node->right);
   }
 
   public function remove($value): BinarySearchTree {
@@ -191,7 +191,7 @@ class BinarySearchTree {
   }
 
   public function post_order_traversal(\Closure $fn): BinarySearchTree {
-    $this->post_order_traversal_impl($fn, $this->_root);
+    $this->post_order_traversel_impl($fn, $this->_root);
     return $this;
   }
 }
