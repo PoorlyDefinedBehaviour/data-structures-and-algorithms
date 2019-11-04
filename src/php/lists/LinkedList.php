@@ -1,34 +1,36 @@
-<?php declare(strict_types=1);
+<?php declare (strict_types = 1);
 
 namespace Lists\LinkedList;
 
 class Node {
   public $data;
-  public ?Node $next;
+  public  ? Node $next;
 
-  public function __construct($data){
+  public function __construct($data) {
     $this->data = $data;
   }
 }
 
 class LinkedList {
-  private ?Node $_head = null;
+  private  ? Node $_head = null;
   private int $_length = 0;
 
-  private function assert_index_is_valid(int $index): void {
-    if($index < 0 || $index > $this->_length)
+  private function assert_index_is_valid(int $index) : void {
+    if ($index < 0 || $index > $this->_length) {
       throw new Exception("Invalid index '{$index}' at LinkedList.insert_at");
+    }
+
   }
 
-  public function head() { return $this->_head ? $this->_head->data : null; }
-  public function length(): int { return $this->_length; }
+  public function head() {return $this->_head ? $this->_head->data : null;}
+  public function length() : int {return $this->_length;}
 
   public function at($index) {
     $this->assert_index_is_valid($index);
 
     $current_node = $this->_head;
     $current_index = 0;
-    while($current_index !== $index){
+    while ($current_index !== $index) {
       $current_node = $current_node->next;
       $current_index += 1;
     }
@@ -45,7 +47,7 @@ class LinkedList {
 
     $this->_length += 1;
 
-    if($index === 0){
+    if ($index === 0) {
       $temp = $this->_head;
       $this->_head = new Node($value);
       $this->_head->next = $temp;
@@ -54,7 +56,7 @@ class LinkedList {
 
     $current_node = $this->_head;
     $current_index = 0;
-    while($current_index + 1 !== $index){
+    while ($current_index + 1 !== $index) {
       $current_node = $current_node->next;
       $current_index += 1;
     }
@@ -70,14 +72,14 @@ class LinkedList {
 
     $this->_length -= 1;
 
-    if($index === 0){
+    if ($index === 0) {
       $this->_head = $this->_head->next;
       return $this;
     }
 
     $current_node = $this->_head;
     $current_index = 0;
-    while($current_index + 1!== $index){
+    while ($current_index + 1 !== $index) {
       $current_node = $current_node->next;
       $current_index += 1;
     }
@@ -88,35 +90,37 @@ class LinkedList {
   }
 
   public function remove($value): LinkedList {
-    if($this->_head->data === $value){
+    if ($this->_head->data === $value) {
       $this->_head = $this->_head->next;
       $this->_length -= 1;
       return $this;
     }
 
-     $current_node = $this->_head;
-     while($current_node){
-       if($current_node->next->data === $value){
+    $current_node = $this->_head;
+    while ($current_node) {
+      if ($current_node->next->data === $value) {
         $current_node->next = $current_node->next->next;
         $this->_length -= 1;
         return $this;
-       }
-       $current_node = $current_node->next;
-     }
-    
-     throw new Exception("value '{$value}' not found at LinkedList.remove");
+      }
+      $current_node = $current_node->next;
+    }
+
+    throw new Exception("value '{$value}' not found at LinkedList.remove");
   }
 
   public function find($value) {
-    return $this->find_if(function($v) use(&$value) { return $v === $value; });
+    return $this->find_if(function ($v) use (&$value) {return $v === $value;});
   }
 
   public function find_if(\Closure $predicate) {
     $current_node = $this->_head;
-    
-    while($current_node){
-      if($predicate($current_node->data))
+
+    while ($current_node) {
+      if ($predicate($current_node->data)) {
         return $current_node->data;
+      }
+
       $current_node = $current_node->next;
     }
 
@@ -127,9 +131,11 @@ class LinkedList {
     $current_index = 0;
     $current_node = $this->_head;
 
-    while($current_node){
-      if($predicate($current_node->data))
+    while ($current_node) {
+      if ($predicate($current_node->data)) {
         return $current_index;
+      }
+
       $current_node = $current_node->next;
       $current_index += 1;
     }
@@ -139,18 +145,18 @@ class LinkedList {
   }
 
   public function remove_if(\Closure $predicate): LinkedList {
-    if($this->_head && $predicate($this->_head->data)){
+    if ($this->_head && $predicate($this->_head->data)) {
       $this->_head = $this->_head->next;
       $this->_length -= 1;
       return $this;
     }
 
     $current_node = $this->_head;
-    while($current_node){
-      if($predicate($current_node->next->data)){
-       $current_node->next = $current_node->next->next;
-       $this->_length -= 1;
-       return $this;
+    while ($current_node) {
+      if ($predicate($current_node->next->data)) {
+        $current_node->next = $current_node->next->next;
+        $this->_length -= 1;
+        return $this;
       }
       $current_node = $current_node->next;
     }
@@ -158,11 +164,11 @@ class LinkedList {
     return $this;
   }
 
-  public function map(\Closure $transformer): LinkedList{
+  public function map(\Closure $transformer): LinkedList {
     $list = new LinkedList();
-    
+
     $current_node = $this->_head;
-    while($current_node){
+    while ($current_node) {
       $list->insert($transformer($current_node->data));
       $current_node = $current_node->next;
     }
@@ -174,9 +180,11 @@ class LinkedList {
     $list = new LinkedList();
 
     $current_node = $this->_head;
-    while($current_node){
-      if($predicate($current_node->data))
+    while ($current_node) {
+      if ($predicate($current_node->data)) {
         $list->insert($current_node->data);
+      }
+
       $current_node = $current_node->next;
     }
 
@@ -187,7 +195,7 @@ class LinkedList {
     $result = null;
 
     $current_node = $this->_head;
-    while($current_node) {
+    while ($current_node) {
       $result = $reducer($result, $current_node->data);
       $current_node = $current_node->next;
     }
@@ -198,7 +206,7 @@ class LinkedList {
   public function for_each(\Closure $fn): LinkedList {
     $current_node = $this->_head;
 
-    while($current_node){
+    while ($current_node) {
       $fn($current_node->data);
       $current_node = $current_node->next;
     }
