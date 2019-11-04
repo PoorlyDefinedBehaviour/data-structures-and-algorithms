@@ -35,7 +35,7 @@ class BinarySearchTree {
   }
 
   private function assert_not_empty(): void {
-    if($this->is_empty()) throw new Exception("Tried to call BinarySearchTree.min() on a empty tree");
+    if($this->is_empty()) throw new Exception("Tried to perform an operation which requires a non empty tree");
   }
   
   public function __construct(\Closure $comparator){
