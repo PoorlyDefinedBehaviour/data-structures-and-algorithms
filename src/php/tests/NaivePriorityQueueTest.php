@@ -8,21 +8,21 @@ use PHPUnit\Framework\TestCase;
 
 final class NaivePriorityQueueTest extends TestCase {
   public function test_length(): void {
-    $queue = new NaivePriorityQueue();
+    $queue = new NaivePriorityQueue(\Closure::fromCallable("sort"));
     $this->assertEquals(0, $queue->length());
     $queue->push(444);
     $this->assertEquals(1, $queue->length());
   }
 
   public function test_is_empty(): void {
-    $queue = new NaivePriorityQueue();
+    $queue = new NaivePriorityQueue(\Closure::fromCallable("sort"));
     $this->assertEquals(true, $queue->is_empty());
     $queue->push(444);
     $this->assertEquals(false, $queue->is_empty());
   }
 
   public function test_push(): void {
-    $queue = new NaivePriorityQueue();
+    $queue = new NaivePriorityQueue(\Closure::fromCallable("sort"));
     $queue->push(4444)
       ->push(432432)
       ->push(44)
@@ -31,7 +31,7 @@ final class NaivePriorityQueueTest extends TestCase {
   }
 
   public function test_next(): void {
-    $queue = new NaivePriorityQueue();
+    $queue = new NaivePriorityQueue(\Closure::fromCallable("sort"));
     $queue->push(5)
       ->push(4)
       ->push(3)
@@ -46,7 +46,7 @@ final class NaivePriorityQueueTest extends TestCase {
   }
 
   public function test_clear(): void {
-    $queue = new NaivePriorityQueue();
+    $queue = new NaivePriorityQueue(\Closure::fromCallable("sort"));
     $queue->push(1)
       ->push(2)
       ->push(3);
@@ -58,7 +58,7 @@ final class NaivePriorityQueueTest extends TestCase {
   }
 
   public function test_peek(): void {
-    $queue = new NaivePriorityQueue();
+    $queue = new NaivePriorityQueue(\Closure::fromCallable("sort"));
     $queue->push(3233)
       ->push(432432)
       ->push(44)

@@ -6,6 +6,12 @@ class NaivePriorityQueue {
   private array $elements = [];
   private int $_length = 0;
 
+  private \Closure $sorting_function;
+
+  public function __construct(\Closure $sorting_function) {
+    $this->sorting_function = $sorting_function;
+  }
+
   private function assert_not_empty(): void {
     if ($this->_length === 0) {
       throw new \Exception("Operation requires a non empty queue");
@@ -18,7 +24,7 @@ class NaivePriorityQueue {
   public function push($element): NaivePriorityQueue {
     $this->elements[] = $element;
     $this->_length += 1;
-    sort($this->elements);
+    ($this->sorting_function)($this->elements);
     return $this;
   }
 
