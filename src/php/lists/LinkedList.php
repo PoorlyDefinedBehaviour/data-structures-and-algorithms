@@ -17,9 +17,8 @@ class LinkedList {
 
   private function assert_index_is_valid(int $index) : void {
     if ($index < 0 || $index > $this->_length) {
-      throw new Exception("Invalid index '{$index}' at LinkedList.insert_at");
+      throw new \Exception("Invalid index '{$index}' at LinkedList.insert_at");
     }
-
   }
 
   public function head() {return $this->_head ? $this->_head->data : null;}
