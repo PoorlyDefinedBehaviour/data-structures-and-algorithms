@@ -4,6 +4,7 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
 require_once("src/lists/LinkedList.php");
+use Lists\LinkedList\LinkedList;
 
 final class LinkedListTest extends TestCase {
   public function test_ength(): void {

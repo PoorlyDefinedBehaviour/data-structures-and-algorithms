@@ -1,8 +1,10 @@
 <?php declare(strict_types=1);
 
+namespace Lists\LinkedList;
+
 class Node {
   public $data;
-  public $next;
+  public ?Node $next;
 
   public function __construct($data){
     $this->data = $data;
@@ -18,7 +20,7 @@ class LinkedList {
       throw new Exception("Invalid index '{$index}' at LinkedList.insert_at");
   }
 
-  public function head() { return $this->_head->data; }
+  public function head() { return $this->_head ? $this->_head->data : null; }
   public function length(): int { return $this->_length; }
 
   public function at($index) {
@@ -109,7 +111,7 @@ class LinkedList {
     return $this->find_if(function($v) use(&$value) { return $v === $value; });
   }
 
-  public function find_if(Closure $predicate) {
+  public function find_if(\Closure $predicate) {
     $current_node = $this->_head;
     
     while($current_node){
@@ -121,7 +123,7 @@ class LinkedList {
     return null;
   }
 
-  public function find_index(Closure $predicate): int {
+  public function find_index(\Closure $predicate): int {
     $current_index = 0;
     $current_node = $this->_head;
 
@@ -136,7 +138,7 @@ class LinkedList {
     return $NOT_FOUND_INDEX;
   }
 
-  public function remove_if(Closure $predicate): LinkedList {
+  public function remove_if(\Closure $predicate): LinkedList {
     if($this->_head && $predicate($this->_head->data)){
       $this->_head = $this->_head->next;
       $this->_length -= 1;
@@ -156,7 +158,7 @@ class LinkedList {
     return $this;
   }
 
-  public function map(Closure $transformer): LinkedList{
+  public function map(\Closure $transformer): LinkedList{
     $list = new LinkedList();
     
     $current_node = $this->_head;
@@ -168,7 +170,7 @@ class LinkedList {
     return $list;
   }
 
-  public function filter(Closure $predicate): LinkedList {
+  public function filter(\Closure $predicate): LinkedList {
     $list = new LinkedList();
 
     $current_node = $this->_head;
@@ -181,7 +183,7 @@ class LinkedList {
     return $list;
   }
 
-  public function reduce(Closure $reducer) {
+  public function reduce(\Closure $reducer) {
     $result = null;
 
     $current_node = $this->_head;
@@ -193,7 +195,7 @@ class LinkedList {
     return $result;
   }
 
-  public function for_each(Closure $fn): LinkedList {
+  public function for_each(\Closure $fn): LinkedList {
     $current_node = $this->_head;
 
     while($current_node){
