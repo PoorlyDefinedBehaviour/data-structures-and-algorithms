@@ -1,25 +1,47 @@
-<?php declare(strict_types=1);
+<?php declare (strict_types = 1);
 
+class Stream {
+  private iterable $collection = [];
 
-require_once("src/trees/BinarySearchTree.php");
+  public function __construct(iterable $collection) {
+    $this->collection = $collection;
+  }
 
-use Trees\BinarySearchTree\BinarySearchTree;
+  public function map(\Closure $fn): Stream {
+    $this->collection = array_map($fn, $this->collection);
+    return $this;
+  }
+
+  public function filter(\Closure $fn): Stream {
+    $this->collection = array_filter($this->collection, $fn);
+    return $this;
+  }
+
+  public function reduce(\Closure $fn) {
+    return array_reduce($this->collection, $fn);
+  }
+
+  public function for_each(\Closure $fn): Stream {
+    foreach ($this->collection as $element) {
+      $fn($element);
+    }
+    return $this;
+  }
+
+  public function unwrap(): iterable {
+    return $this->collection;
+  }
+}
+
+function to_stream(iterable $collection): Stream {
+  return new Stream($collection);
+}
 
 function main(): void {
-  $tree = new BinarySearchTree(function($lhs, $rhs) { 
-    if($lhs < $rhs) return -1;
-    if($lhs > $rhs) return 1;
-    return 0;
-  });
-
-  $tree->insert(10)
-       ->insert(20)
-       ->insert(-10);
-
-
-       $tree->remove(20);
-       
-       $tree->remove(10);
-       $tree->pre_order_traversal(function($number){ echo "{$number}\n"; });
+  $array = to_stream(\range(1, 5))
+    ->map(function ($number): int {return $number * 2;})
+    ->filter(function ($number): bool {return $number > 5;})
+    ->for_each(function ($number): void {echo "{$number} ";})
+    ->unwrap();
 }
 main();
