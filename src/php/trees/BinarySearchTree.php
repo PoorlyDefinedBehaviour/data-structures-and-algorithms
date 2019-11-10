@@ -12,10 +12,10 @@ class Node {
   }
 }
 
-class BinarySearchTree {
-  private static int $LESS = -1;
-  private static int $GREATER = 1;
-  private static int $EQUAL = 0;
+class BinarySearchTree implements \ForwardIterable {
+  public const LESS = -1;
+  public const GREATER = 1;
+  public const EQUAL = 0;
 
   private $comparator;
 
@@ -23,15 +23,15 @@ class BinarySearchTree {
   private int $_height = 0;
 
   private function is_less_than(&$lhs, &$rhs) : bool {
-    return ($this->comparator)($lhs, $rhs) === self::$LESS;
+    return ($this->comparator)($lhs, $rhs) === self::LESS;
   }
 
   private function is_greater_than(&$lhs, &$rhs) : bool {
-    return ($this->comparator)($lhs, $rhs) === self::$GREATER;
+    return ($this->comparator)($lhs, $rhs) === self::GREATER;
   }
 
   private function is_equal(&$lhs, &$rhs) : bool {
-    return ($this->comparator)($lhs, $rhs) === self::$EQUAL;
+    return ($this->comparator)($lhs, $rhs) === self::EQUAL;
   }
 
   private function assert_not_empty(): void {
