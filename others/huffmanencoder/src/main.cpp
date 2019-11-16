@@ -2,15 +2,13 @@
 #include <string>
 
 #include "console/Console.hpp"
-#include "hash/HashTable.hpp"
 #include "utils/Split.hpp"
 #include "utils/ReadFile.hpp"
 #include "huffman/Huffman.hpp"
+#include "hash/HashTable.hpp"
 
 auto main() -> int
 {
-  HashTable<std::string, int> hash(20);
-
   std::string const text = read_file("text.txt");
 
   HashTable<std::string, std::size_t> word_frequency_table = create_word_frequency_table(text);
@@ -34,5 +32,4 @@ auto main() -> int
   Console::println(decode(code_table, encoded_text));
 
   Console::println("The encoded text is ", difference(text, encoded_text), " bits smaller than the original text");
-  Console::println(8 * (3 - 8 / 8));
 }
