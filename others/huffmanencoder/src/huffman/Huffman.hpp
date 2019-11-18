@@ -12,6 +12,7 @@
 
 #include "../hash/HashTable.hpp"
 #include "../console/Console.hpp"
+#include "../utils/Quicksort.hpp"
 
 struct Node
 {
@@ -52,10 +53,9 @@ auto create_nodes(HashTable<char, int> const &frequency_table) -> std::vector<st
 
 auto sort_nodes(std::vector<std::shared_ptr<Node>> nodes) -> std::vector<std::shared_ptr<Node>>
 {
-  std::sort(std::begin(nodes), std::end(nodes), [](auto const &lhs, auto const &rhs) {
+  quicksort(nodes, 0, nodes.size() - 1, [](auto const &lhs, auto const &rhs) {
     return lhs->frequency < rhs->frequency;
   });
-
   return nodes;
 }
 
@@ -72,12 +72,14 @@ auto insert(std::vector<std::shared_ptr<Node>> &nodes, std::shared_ptr<Node> con
 {
   for (size_t i = 0; i < nodes.size(); ++i)
   {
-    if (nodes[i]->frequency >= node->frequency)
+    if (node->frequency < nodes[i]->frequency)
     {
-      nodes.emplace(std::begin(nodes) + i, node);
+      nodes.insert(std::begin(nodes) + i, node);
       return;
     }
   }
+
+  nodes.emplace_back(node);
 }
 
 auto create_tree(HashTable<char, int> &frequency_table) -> std::shared_ptr<Node>
@@ -88,27 +90,17 @@ auto create_tree(HashTable<char, int> &frequency_table) -> std::shared_ptr<Node>
   while (nodes.size() > 1)
   {
     auto [first, second] = pop_first_two_elements(nodes);
-    int frequency = 0;
 
-    if (frequency_table.has(first->character))
-      frequency += frequency_table.get(first->character);
+    std::shared_ptr<Node> node = std::make_shared<Node>('\0', first->frequency + second->frequency);
+    node->left = first;
+    node->right = second;
 
-    if (frequency_table.has(second->character))
-      frequency += frequency_table.get(second->character);
+    root = node;
 
-    auto newNode = std::make_shared<Node>('\0', frequency);
-    newNode->left = first;
-    newNode->right = second;
-
-    if (nodes.empty())
-    {
-      root = newNode;
-    }
-
-    insert(nodes, std::move(newNode));
+    insert(nodes, node);
   }
 
-  return nodes.empty() ? root : nodes[0];
+  return root;
 }
 
 auto create_tree_from_code_table(HashTable<char, std::string> const &code_table) -> std::shared_ptr<Node>
@@ -236,5 +228,5 @@ auto pre_order_traversal(std::shared_ptr<Node> const &node) -> void
 auto difference(std::string const &lhs, std::string const &rhs) -> int
 {
   constexpr int BYTE_SIZE = 8;
-  return BYTE_SIZE * (lhs.length() - rhs.length() / BYTE_SIZE);
+  return BYTE_SIZE * lhs.length() - rhs.length() / BYTE_SIZE;
 }

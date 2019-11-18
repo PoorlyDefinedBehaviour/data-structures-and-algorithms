@@ -145,16 +145,18 @@ private:
     return node->left == nullptr && node->right == nullptr;
   }
 
-  static auto insert(std::vector<std::shared_ptr<Node>> &nodes, std::shared_ptr<Node> &&node) -> void
+  static auto insert(std::vector<std::shared_ptr<Node>> &nodes, std::shared_ptr<Node> const &node) -> void
   {
     for (size_t i = 0; i < nodes.size(); ++i)
     {
-      if (nodes[i]->frequency >= node->frequency)
+      if (node->frequency < nodes[i]->frequency)
       {
-        nodes.emplace(std::begin(nodes) + i, std::forward<std::shared_ptr<Node>>(node));
+        nodes.insert(std::begin(nodes) + i, node);
         return;
       }
     }
+
+    nodes.emplace_back(node);
   }
 
   static auto popFirstTwoElements(std::vector<std::shared_ptr<Node>> &nodes) -> std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>>

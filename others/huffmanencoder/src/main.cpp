@@ -11,11 +11,11 @@ auto main() -> int
 {
   std::string const text = read_file("text.txt");
 
-  HashTable<std::string, std::size_t> word_frequency_table = create_word_frequency_table(text);
+  /*   HashTable<std::string, std::size_t> word_frequency_table = create_word_frequency_table(text);
 
-  show_table_entries("Word Frequency Table", word_frequency_table);
+  dump_table("Word Frequency Table", word_frequency_table);
   show_table_collisions("Word Frequency Table Collisions", word_frequency_table);
-
+ */
   HashTable<char, int> frequency_table = create_frequency_table(text);
   std::shared_ptr<Node> tree_root = create_tree(frequency_table);
   HashTable<char, std::string> code_table = create_code_table(tree_root, text.length());

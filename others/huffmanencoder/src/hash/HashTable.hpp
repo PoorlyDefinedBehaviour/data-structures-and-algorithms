@@ -10,6 +10,8 @@
 #include <algorithm>
 
 #include "functions/NaiveHash.hpp"
+#include "functions/JenkinsOneAtATimeHash.hpp"
+#include "functions/MurmurOAAT64.hpp"
 #include "../utils/Split.hpp"
 
 template <typename KeyType, typename ValueType>
@@ -180,7 +182,22 @@ public:
 
     return result;
   }
+
+  template <typename K, typename V>
+  friend auto dump_table(std::string const &table_name, HashTable<K, V> const &table) -> void;
 };
+
+template <typename KeyType, typename ValueType>
+auto dump_table(std::string const &table_name, HashTable<KeyType, ValueType> const &table) -> void
+{
+  Console::println("<---", table_name, "--->");
+  for (std::size_t i = 0; i < table.elements.size(); ++i)
+    if (table.elements[i] != nullptr)
+      Console::println('[', i, ']', table.elements[i]->key, " => ", table.elements[i]->value);
+    else
+      Console::println('[', i, ']', "EMPTY");
+  Console::println("</---", table_name, "--->");
+}
 
 template <typename KeyType, typename ValueType>
 auto show_table_entries(std::string const &table_name, HashTable<KeyType, ValueType> const &table) -> void
@@ -209,6 +226,7 @@ auto create_word_frequency_table(std::string const &text) -> HashTable<std::stri
   std::vector<std::string> words = split(text, " ");
 
   HashTable<std::string, std::size_t> table(words.size());
+  table.set_hash_function(murmur_oaat64);
 
   for (auto const &word : words)
   {

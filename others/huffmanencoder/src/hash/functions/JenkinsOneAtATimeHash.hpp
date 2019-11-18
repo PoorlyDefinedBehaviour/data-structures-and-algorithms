@@ -21,7 +21,6 @@ auto jenkins_one_at_a_time_hash_impl(std::string const &key) -> std::size_t
 
 auto jenkins_one_at_a_time_hash_impl(char const key) -> std::size_t
 {
-  std::size_t i = 0;
   uint32_t hash = 0;
 
   hash += key;
@@ -35,5 +34,5 @@ auto jenkins_one_at_a_time_hash_impl(char const key) -> std::size_t
 }
 
 auto jenkins_one_at_a_time_hash = [](auto const &key) -> std::size_t {
-  jenkins_one_at_a_time_hash_impl(key);
+  return jenkins_one_at_a_time_hash_impl(key);
 };

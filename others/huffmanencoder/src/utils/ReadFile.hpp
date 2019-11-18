@@ -6,8 +6,8 @@
 auto read_file(std::string path) -> std::string
 {
   std::ifstream file(path);
-  std::string file_content((std::istreambuf_iterator<char>(file)),
-                           std::istreambuf_iterator<char>());
+  std::string file_contents((std::istreambuf_iterator<char>(file)),
+                            std::istreambuf_iterator<char>());
 
-  return file_content;
+  return file_contents;
 }
