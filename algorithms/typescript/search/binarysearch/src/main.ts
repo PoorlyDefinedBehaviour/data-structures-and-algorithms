@@ -15,14 +15,14 @@ function binary_search_impl<T>(
 ): number {
   if (start > end) return -1;
 
-  const middle = Math.ceil(divide(sum(start)(end))(2));
-  const element_found = array[middle];
+  const middle_index = Math.ceil(divide(sum(start)(end))(2));
+  const element_found = array[middle_index];
 
-  if (target === element_found) return middle;
+  if (target === element_found) return middle_index;
 
   return target < element_found
-    ? binary_search_impl(array, start, end - 1, target)
-    : binary_search_impl(array, start + 1, end, target);
+    ? binary_search_impl(array, start, middle_index - 1, target)
+    : binary_search_impl(array, middle_index + 1, end, target);
 }
 
 const binary_search = <T>(array: T[], target: T) =>
