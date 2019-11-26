@@ -2,7 +2,7 @@
  * Best O(1)
  * Average O(log n)
  * Worst O(log n)
- * Space O(log n) recursive calls?
+ * Space O(log n) recursive calls
  */
 const sum = x => y => x + y;
 const divide = x => y => x / y;
