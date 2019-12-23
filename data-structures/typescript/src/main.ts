@@ -1,35 +1,17 @@
-import FamilyTree from "./trees/FamilyTree";
+import BinarySearchTree from "./trees/BinarySearchTree";
 
 function main(): void {
-  const family_tree = new FamilyTree();
+  const tree = new BinarySearchTree<number>();
+  tree
+    .insert(1)
+    .insert(2)
+    .insert(3);
 
-  family_tree
-    .insert("John", "", "")
-    .insert("John", "mother", "Alice")
-    .insert("John", "father", "Bob")
-    .insert("Bob", "mother", "Jane")
-    .insert("Jane", "father", "James");
+  tree.remove(1);
+  console.log(`tree.height() => ${tree.height()}`);
 
-  console.log(JSON.stringify(family_tree, null, 2));
-
-  family_tree.remove("Bob");
-
-  console.log(JSON.stringify(family_tree, null, 2));
-
-  console.log(
-    "family_tree.contains(node => node.person_name === 'Alice') =>",
-    family_tree.contains(node => node.person_name === "Alice")
-  );
-
-  const alice = family_tree.find(node => node.person_name === "Alice");
-  console.log(alice);
-
-  const jackson = family_tree.find(node => node.person_name === "Jackson");
-  console.log(jackson);
-
-  console.log(
-    "family_tree.contains(node => node.person_name === 'Jackson') =>",
-    family_tree.contains(node => node.person_name === "Jackson")
-  );
+  console.log(tree.find(1));
+  console.log(tree.find(2));
+  console.log(tree.find(3));
 }
 main();

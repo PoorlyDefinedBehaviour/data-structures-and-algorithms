@@ -1,4 +1,4 @@
-class Node<T> {
+export class Node<T> {
   public left: Node<T>;
   public right: Node<T>;
 
@@ -76,10 +76,10 @@ export default class BinarySearchTree<T> {
   }
 
   private findNodeAndParent(
-    parent: Node<T>,
+    parent: Maybe<Node<T>>,
     node: Node<T>,
     value: T
-  ): Pair<Node<T>, Node<T>> {
+  ): Pair<Maybe<Node<T>>, Maybe<Node<T>>> {
     if (!node) return [null, null];
 
     if (this.isLessThan(value, node.value))
@@ -90,7 +90,9 @@ export default class BinarySearchTree<T> {
     return [parent, node];
   }
 
-  private findBiggestAndParentFrom(node: Node<T>) {
+  private findBiggestAndParentFrom(
+    node: Node<T>
+  ): Pair<Maybe<Node<T>>, Maybe<Node<T>>> {
     let parent: Node<T>;
     let current: Node<T> = node;
 
@@ -99,7 +101,7 @@ export default class BinarySearchTree<T> {
       current = current.right;
     }
 
-    return [parent, current];
+    return [parent!, current];
   }
 
   public remove(value: T): this {
@@ -114,8 +116,8 @@ export default class BinarySearchTree<T> {
 
     --this._height;
 
-    if (!nodeToDelete.left) {
-      nodeToDelete = nodeToDelete.right;
+    if (!nodeToDelete!.left) {
+      nodeToDelete = nodeToDelete!.right;
 
       if (nodeToDeleteParent) {
         nodeToDeleteParent.right = nodeToDelete;
@@ -126,11 +128,11 @@ export default class BinarySearchTree<T> {
       return this;
     }
 
-    const [parent, biggest] = this.findBiggestAndParentFrom(nodeToDelete.left);
-    biggest.right = nodeToDelete.right;
+    const [parent, biggest] = this.findBiggestAndParentFrom(nodeToDelete!.left);
+    biggest!.right = nodeToDelete!.right;
     if (parent) {
-      parent.right = biggest.right;
-      biggest.left = nodeToDelete.left;
+      parent.right = biggest!.right;
+      biggest!.left = nodeToDelete!.left;
     }
 
     return this;
