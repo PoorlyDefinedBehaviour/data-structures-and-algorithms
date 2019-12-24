@@ -1,17 +1,16 @@
-import BinarySearchTree from "./trees/BinarySearchTree";
+import Trie from "./trees/Trie";
 
 function main(): void {
-  const tree = new BinarySearchTree<number>();
-  tree
-    .insert(1)
-    .insert(2)
-    .insert(3);
+  const trie = new Trie();
 
-  tree.remove(1);
-  console.log(`tree.height() => ${tree.height()}`);
+  trie
+    .insert("ten")
+    .insert("tea")
+    .print();
 
-  console.log(tree.find(1));
-  console.log(tree.find(2));
-  console.log(tree.find(3));
+  console.log(`trie.search("ten") => ${trie.search("ten")}`);
+  console.log(`trie.search("tea") => ${trie.search("tea")}`);
+  console.log(`trie.search("te") => ${trie.search("te")}`);
+  console.log(`trie.search("tex") => ${trie.search("tex")}`);
 }
 main();
