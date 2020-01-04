@@ -31,14 +31,14 @@ func isSymmetricRecursive(root *TreeNode) bool {
 * space O(n)
 **/
 func isSymmetricIterative(root *TreeNode) bool {
-	var stack = make([]*TreeNode, 2)
-	stack = append(stack, root)
-	stack = append(stack, root)
+	var queue = make([]*TreeNode, 2)
+	queue = append(queue, root)
+	queue = append(queue, root)
 
-	for len(stack) > 0 {
-		var first = stack[0]
-		var second = stack[1]
-		stack = stack[2:]
+	for len(queue) > 0 {
+		var first = queue[0]
+		var second = queue[1]
+		queue = queue[2:]
 
 		if first == nil && second == nil {
 			continue
@@ -50,10 +50,10 @@ func isSymmetricIterative(root *TreeNode) bool {
 			return false
 		}
 
-		stack = append(stack, first.Left)
-		stack = append(stack, second.Right)
-		stack = append(stack, first.Right)
-		stack = append(stack, second.Left)
+		queue = append(queue, first.Left)
+		queue = append(queue, second.Right)
+		queue = append(queue, first.Right)
+		queue = append(queue, second.Left)
 	}
 
 	return true
