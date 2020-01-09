@@ -1,5 +1,5 @@
-import Maybe from "../../typings/maybe";
-import Predicate from "../../typings/predicate";
+import Maybe from "../typings/maybe";
+import Predicate from "../typings/predicate";
 
 class Node<T> {
   public data: T;

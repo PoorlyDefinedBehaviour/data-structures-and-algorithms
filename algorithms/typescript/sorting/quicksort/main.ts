@@ -1,4 +1,4 @@
-import { tap } from "../../std/Std.lib";
+import { tap } from "../std/Std.lib";
 
 /**
  * Best O(n log n)

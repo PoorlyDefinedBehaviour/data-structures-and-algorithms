@@ -1,4 +1,4 @@
-import BinarySearchTree, { Node } from "./trees/BinarySearchTree";
+import BinarySearchTree, { Node } from "./BinarySearchTree";
 
 function depthFirstTraversalWithStack<T>(node: Node<T>) {
   const stack = [node];
