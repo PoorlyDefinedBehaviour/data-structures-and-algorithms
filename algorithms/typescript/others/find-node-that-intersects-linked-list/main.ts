@@ -6,13 +6,17 @@ class LinkedListNode {
 
 type Maybe<T> = T | undefined | null;
 
+/**
+* time O(n)
+* space O(1)
+**/
 function findIntersectingNode(
   nodeOne: LinkedListNode,
   nodeTwo: LinkedListNode
 ): Maybe<LinkedListNode> {
   const lengthDifference = Math.abs(nodeTwo.length - nodeTwo.length);
 
-  for (let i = 0; i < lengthDifference; ++i) {
+  for (let i = 0; i < lengthDifference && nodeOne; ++i) {
     nodeOne = nodeOne.next;
   }
 
