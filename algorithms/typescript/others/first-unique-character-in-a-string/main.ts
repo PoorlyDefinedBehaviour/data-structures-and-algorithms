@@ -9,7 +9,7 @@ interface Dictionary<T> {
 
 /**
  * time O(2n) -> O(n)
- * space O(1)
+ * space O(n)
  */
 function firstUniqueCharacter(text: string): number {
   const characterFrequencyTable: Dictionary<IndexAndFrequency> = {};

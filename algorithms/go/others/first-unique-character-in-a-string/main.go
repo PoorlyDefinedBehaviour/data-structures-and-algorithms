@@ -7,7 +7,7 @@ type Pair struct {
 
 /**
 * time O(2n) -> O(n)
-* space O(1)
+* space O(n)
 **/
 func firstUniqueCharacter(text string) int {
 	const alphabetLength = 26
