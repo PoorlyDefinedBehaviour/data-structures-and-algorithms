@@ -14,8 +14,8 @@
 
 (require '[clojure.string :as str])
 
-; time O(n)
-; space O(2n) -> O(n)
+; time O(2n) -> O(n) :: maybe O(1) if the max size of an ipv4 is taken into consideration
+; space O(2n) -> O(n) :: maybe O(1) if the max size of an ipv4 is taken into consideration
 (defn defang [ip]
   (str/join "[.]" (str/split ip #"\.")))
 
