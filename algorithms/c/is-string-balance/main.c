@@ -31,6 +31,22 @@ struct List *makeList()
   return list;
 }
 
+void destroyNode(struct Node *node)
+{
+  if (node == NULL)
+  {
+    return;
+  }
+
+  destroyNode(node->next);
+  free(node);
+}
+
+void destroy(struct List *list)
+{
+  destroyNode(list->head);
+}
+
 int isEmpty(struct List *list)
 {
   return list->length == 0;
@@ -117,7 +133,9 @@ int isBalanced(char *string)
     }
   }
 
-  return isEmpty(list);
+  int isStringBalanced = isEmpty(list);
+  destroy(list);
+  return isStringBalanced;
 }
 
 int main()
