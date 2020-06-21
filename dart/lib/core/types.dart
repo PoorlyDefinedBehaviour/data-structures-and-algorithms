@@ -5,3 +5,5 @@ typedef Morphism<T, U> = U Function(T value);
 typedef Reducer<T, U> = U Function(U accumulator, T value);
 
 typedef Consumer<T> = void Function(T value);
+
+typedef Producer<T> = T Function();
