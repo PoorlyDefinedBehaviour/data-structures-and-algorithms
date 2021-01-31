@@ -37,7 +37,7 @@
       (let [last-character (last characters)]
         (matches last-character character))))
 
-(defn are-there-characters-remaining [result]
+(defn consumed-all-characters [result]
   (if (vector? result)
     (empty?  result)
     result))
@@ -51,7 +51,7 @@
                              (vec (drop-last 1 characters)))))
                        []
                        (clojure.string/split s #""))]
-    (are-there-characters-remaining result)))
+    (consumed-all-characters result)))
 
 (deftest is-string-balanced-tests
   (is (= true (is-string-balanced "()")))
