@@ -76,7 +76,7 @@ fn find_minimum_spanning_tree(
 
   let mut visited_edges = 0;
 
-  while visited_edges != adjency_list.len() && !priority_queue.is_empty() {
+  while visited_edges != adjency_list.len() - 1 && !priority_queue.is_empty() {
     let cheapest_path = priority_queue.pop().unwrap();
     let unvisited_node = cheapest_path.to;
 
