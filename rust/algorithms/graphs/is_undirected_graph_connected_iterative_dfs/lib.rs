@@ -54,7 +54,7 @@ mod tests {
   use super::*;
 
   #[test]
-  fn graph_is_connected_bfs() {
+  fn graph_is_connected() {
     let test_cases = vec![
       /*
           1 - 3 - 5
