@@ -4,7 +4,7 @@ pub type Graph<Representation> = Representation;
 
 pub type AdjencyList = Vec<Vec<i32>>;
 
-pub fn is_undirected_graph_connected_recursive_bfs(graph: &Graph<AdjencyList>) -> bool {
+pub fn is_undirected_graph_connected_recursive_dfs(graph: &Graph<AdjencyList>) -> bool {
   /*    1 - 3 - 5
       /         /
     0         /
@@ -87,7 +87,7 @@ mod tests {
     ];
 
     for (graph, expected) in test_cases {
-      let actual = is_undirected_graph_connected_recursive_bfs(&graph);
+      let actual = is_undirected_graph_connected_recursive_dfs(&graph);
 
       assert_eq!(expected, actual);
     }
