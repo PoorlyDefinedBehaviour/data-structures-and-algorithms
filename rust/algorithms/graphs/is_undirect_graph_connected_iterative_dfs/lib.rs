@@ -94,19 +94,12 @@ mod tests {
         ],
         false,
       ),
+      /*
+        0 - 1
+        2 - 3
+      */
       (vec![vec![1], vec![0], vec![3], vec![2]], false),
-      (
-        vec![
-          vec![1, 2],
-          vec![0, 3],
-          vec![0, 4],
-          vec![1, 5],
-          vec![2, 6],
-          vec![3, 4],
-          vec![6, 4],
-        ],
-        true,
-      ),
+    
     ];
 
     for (graph, expected) in test_cases {
