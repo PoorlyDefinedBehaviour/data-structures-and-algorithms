@@ -12,6 +12,10 @@ pub enum Tree<T> {
 
 type AdjencyList<T> = HashMap<T, Vec<T>>;
 
+/// given an adjency list L and a starting node in L
+/// we depth first search the graph, creating a n-ary tree
+/// where the root is the starting node and
+/// the children of a node are the nodes reachable from it
 pub fn adjency_list_to_rooted_tree<T: Eq + Hash + Clone>(
   root_node: T,
   adjency_list: &AdjencyList<T>,
