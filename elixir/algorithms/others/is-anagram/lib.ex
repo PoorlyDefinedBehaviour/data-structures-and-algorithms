@@ -1,4 +1,6 @@
 defmodule Kata do
+  # time O(n)
+  # space O(1) if consiredering only letters
   def is_anagram(string_a, string_b) do
     String.length(string_a) === String.length(string_b) and
       all_letters_are_used(string_a, string_b)
