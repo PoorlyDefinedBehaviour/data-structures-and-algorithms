@@ -44,7 +44,7 @@ defmodule Kata do
 
   @doc """
   time O(n)
-  space O(1)
+  space O(n)
   """
   def count_binary_substrings(string) do
     count_binary_substrings(String.graphemes(string), 0, 0, 1)
