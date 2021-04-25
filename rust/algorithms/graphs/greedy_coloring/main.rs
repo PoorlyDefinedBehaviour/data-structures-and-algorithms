@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 
-fn get_lowest_color_number_not_unused_by_neighbors(
-  available_colors: &Vec<usize>,
+fn get_lowest_color_number_unused_by_neighbors(
+  available_colors: &[usize],
   vertex_colors: &HashMap<i32, usize>,
-  neighbors: &Vec<i32>,
+  neighbors: &[i32],
 ) -> usize {
   available_colors
     .iter()
@@ -29,7 +29,7 @@ pub fn greedy_color(adjacency_list: &HashMap<i32, Vec<i32>>) -> HashMap<i32, usi
   let mut vertex_colors = HashMap::new();
 
   for vertex in vertices {
-    let color = get_lowest_color_number_not_unused_by_neighbors(
+    let color = get_lowest_color_number_unused_by_neighbors(
       &available_colors,
       &vertex_colors,
       adjacency_list.get(vertex).unwrap(),
