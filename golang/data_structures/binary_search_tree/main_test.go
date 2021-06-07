@@ -786,3 +786,176 @@ func TestBinarySearchTree_Fold(t *testing.T) {
 		assert.Equal(t, tt.expected, actual)
 	}
 }
+
+func TestBinarySearchTree_Remove(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		tree     *BinarySearchTree
+		target   int
+		expected *BinarySearchTree
+	}{
+		{
+			tree:     nil,
+			target:   1,
+			expected: nil,
+		},
+		{
+			tree:     NewBinarySearchTree(1),
+			target:   1,
+			expected: nil,
+		},
+		{
+			tree: &BinarySearchTree{
+				Data: 5,
+				Left: &BinarySearchTree{
+					Data: 3,
+					Left: &BinarySearchTree{
+						Data:  1,
+						Left:  nil,
+						Right: nil,
+					},
+					Right: nil,
+				},
+				Right: &BinarySearchTree{
+					Data:  10,
+					Left:  nil,
+					Right: nil,
+				},
+			},
+			target: 3,
+			expected: &BinarySearchTree{
+				Data: 5,
+				Left: &BinarySearchTree{
+					Data:  1,
+					Left:  nil,
+					Right: nil,
+				},
+				Right: &BinarySearchTree{
+					Data:  10,
+					Left:  nil,
+					Right: nil,
+				},
+			},
+		},
+		{
+			tree: &BinarySearchTree{
+				Data: 5,
+				Left: &BinarySearchTree{
+					Data: 3,
+					Left: nil,
+					Right: &BinarySearchTree{
+						Data:  1,
+						Left:  nil,
+						Right: nil,
+					},
+				},
+				Right: &BinarySearchTree{
+					Data:  10,
+					Left:  nil,
+					Right: nil,
+				},
+			},
+			target: 3,
+			expected: &BinarySearchTree{
+				Data: 5,
+				Left: &BinarySearchTree{
+					Data:  1,
+					Left:  nil,
+					Right: nil,
+				},
+				Right: &BinarySearchTree{
+					Data:  10,
+					Left:  nil,
+					Right: nil,
+				},
+			},
+		},
+		{
+			tree: &BinarySearchTree{
+				Data: 5,
+				Left: &BinarySearchTree{
+					Data: 3,
+					Left: &BinarySearchTree{
+						Data:  1,
+						Left:  nil,
+						Right: nil,
+					},
+					Right: &BinarySearchTree{
+						Data: 4,
+						Left: &BinarySearchTree{
+							Data:  2,
+							Left:  nil,
+							Right: nil,
+						},
+						Right: nil,
+					},
+				},
+				Right: &BinarySearchTree{
+					Data:  10,
+					Left:  nil,
+					Right: nil,
+				},
+			},
+			target: 3,
+			expected: &BinarySearchTree{
+				Data: 5,
+				Left: &BinarySearchTree{
+					Data: 2,
+					Left: &BinarySearchTree{
+						Data:  1,
+						Left:  nil,
+						Right: nil,
+					},
+					Right: &BinarySearchTree{
+						Data:  4,
+						Left:  nil,
+						Right: nil,
+					},
+				},
+				Right: &BinarySearchTree{
+					Data:  10,
+					Left:  nil,
+					Right: nil,
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		actual := tt.tree.Remove(tt.target)
+
+		assert.Equal(t, tt.expected, actual)
+	}
+}
+
+func TestBinarySearchTree_MinNode(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		tree     *BinarySearchTree
+		expected *BinarySearchTree
+	}{
+		{
+			tree:     NewBinarySearchTree(0),
+			expected: NewBinarySearchTree(0),
+		},
+		{
+			tree:     NewBinarySearchTree(2).Insert(10).Insert(0).Insert(-3).Insert(-10),
+			expected: NewBinarySearchTree(-10),
+		},
+		{
+			tree:     NewBinarySearchTree(0).Insert(1).Insert(2).Insert(3),
+			expected: NewBinarySearchTree(0).Insert(1).Insert(2).Insert(3),
+		},
+		{
+			tree:     NewBinarySearchTree(10).Insert(9).Insert(8).Insert(11).Insert(12),
+			expected: NewBinarySearchTree(8),
+		},
+	}
+
+	for _, tt := range tests {
+		actual := tt.tree.MinNode()
+
+		assert.Equal(t, tt.expected, actual)
+	}
+}

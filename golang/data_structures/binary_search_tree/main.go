@@ -310,6 +310,53 @@ func (tree *BinarySearchTree) Fold(initialValue interface{}, f func(interface{},
 }
 
 // time O(n)
+// space O(1)
+func (tree *BinarySearchTree) MinNode() *BinarySearchTree {
+	current := tree
+
+	for current.Left != nil {
+		current = current.Left
+	}
+
+	return current
+}
+
+func (tree *BinarySearchTree) Remove(value int) *BinarySearchTree {
+	if tree == nil {
+		return nil
+	}
+
+	if value < tree.Data {
+		tree.Left = tree.Left.Remove(value)
+		return tree
+	}
+
+	if value > tree.Data {
+		tree.Right = tree.Right.Remove(value)
+		return tree
+	}
+
+	if tree.IsLeaf() {
+		return nil
+	}
+
+	if tree.Right == nil {
+		return tree.Left
+	}
+
+	if tree.Left == nil {
+		return tree.Right
+	}
+
+	minNode := tree.Right.MinNode()
+
+	tree.Data = minNode.Data
+	tree.Right = tree.Right.Remove(minNode.Data)
+
+	return tree
+}
+
+// time O(n)
 // space O(n)
 func (tree *BinarySearchTree) Mirror() *BinarySearchTree {
 	return tree.NodeMap(func(tree *BinarySearchTree) *BinarySearchTree {
