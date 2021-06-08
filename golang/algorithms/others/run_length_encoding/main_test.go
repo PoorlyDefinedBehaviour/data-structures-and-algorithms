@@ -32,8 +32,7 @@ func Test_runLengthEncoding(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		actual := runLengthEncoding(tt.input)
-
-		assert.Equal(t, tt.expected, actual)
+		assert.Equal(t, tt.expected, runLengthEncoding(tt.input))
+		assert.Equal(t, tt.expected, runLengthEncoding2(tt.input))
 	}
 }
