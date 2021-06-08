@@ -41,7 +41,7 @@ func countWhile(input string, predicate func(rune) bool) int {
 }
 
 // time O(n)
-// space O(n)
+// space O(2n)
 func runLengthEncoding2(input string) string {
 	stringBuilder := strings.Builder{}
 
