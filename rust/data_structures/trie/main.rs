@@ -33,8 +33,8 @@ impl Trie {
     for character in word.chars() {
       if !current_node.children.contains_key(&character) {
         current_node.children.insert(character, TrieNode::new());
-        current_node = current_node.children.get_mut(&character).unwrap();
       }
+      current_node = current_node.children.get_mut(&character).unwrap();
     }
 
     current_node.is_end_of_word = true;
@@ -77,6 +77,7 @@ mod tests {
       (vec!["hello", "world"], "hello", true),
       (vec!["hello", "world", "one", "a"], "a", true),
       (vec!["hello", "world", "one", "a"], "one", true),
+      (vec!["hello", "hello", "one", "a"], "h", false),
     ];
 
     for (words_in_trie, target, expected) in tests {
@@ -85,8 +86,6 @@ mod tests {
       for word in words_in_trie {
         trie.insert(&word.to_owned());
       }
-
-      dbg!(&trie);
 
       let actual = trie.contains(&target.to_owned());
 
