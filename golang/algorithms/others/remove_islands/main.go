@@ -74,7 +74,7 @@ func dfs(graph [][]int, rowIndex int, columnIndex int, visited map[pair]bool, co
 	// connected to a 1 that's in a border.
 	visited[position] = true
 
-	connectedToBorder[position] = value == 1
+	connectedToBorder[position] = true
 
 	dfs(graph, rowIndex-1, columnIndex, visited, connectedToBorder)
 	dfs(graph, rowIndex+1, columnIndex, visited, connectedToBorder)
