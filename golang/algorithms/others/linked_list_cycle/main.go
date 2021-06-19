@@ -39,6 +39,13 @@ type Node struct {
 
 // time O(n)
 // space O(1)
+//
+// Solution:
+// There are two pointers:
+// the pointer called tortoise advances by going to the next node in the list,
+// the pointer called hare advances by skipping the next node in the list and
+// going directly to the node after that. Since one pointer is faster than the other,
+// the faster node will reach the slower one if there's a cycle.
 func hasCycleUsingFloydsTortoiseAndHare(head *Node) bool {
 	tortoise := head
 	hare := tortoise
@@ -57,6 +64,11 @@ func hasCycleUsingFloydsTortoiseAndHare(head *Node) bool {
 
 // time O(n)
 // space O(n)
+//
+// Solution:
+// Visit every node and mark it as visited,
+// if the same node is visited more than once,
+// there is a cycle.
 func hasCycleUsingSet(head *Node) bool {
 	visited := make(map[*Node]bool)
 
