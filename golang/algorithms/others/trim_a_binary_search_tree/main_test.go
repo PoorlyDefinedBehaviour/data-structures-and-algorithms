@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_TreeNode_Trim(t *testing.T) {
+func Test_TreeNode_TrimMut(t *testing.T) {
 	t.Parallel()
 
 	t.Run("example 1", func(t *testing.T) {
@@ -34,6 +34,7 @@ func Test_TreeNode_Trim(t *testing.T) {
 			},
 		}
 
+		assert.Equal(t, expected, node.TrimMut(1, 2))
 		assert.Equal(t, expected, node.Trim(1, 2))
 	})
 
@@ -74,6 +75,7 @@ func Test_TreeNode_Trim(t *testing.T) {
 			Right: nil,
 		}
 
+		assert.Equal(t, expected, node.TrimMut(1, 3))
 		assert.Equal(t, expected, node.Trim(1, 3))
 	})
 
@@ -90,6 +92,7 @@ func Test_TreeNode_Trim(t *testing.T) {
 			Right: nil,
 		}
 
+		assert.Equal(t, expected, node.TrimMut(1, 2))
 		assert.Equal(t, expected, node.Trim(1, 2))
 	})
 
@@ -114,6 +117,7 @@ func Test_TreeNode_Trim(t *testing.T) {
 			},
 		}
 
+		assert.Equal(t, expected, node.TrimMut(1, 3))
 		assert.Equal(t, expected, node.Trim(1, 3))
 	})
 
@@ -134,6 +138,7 @@ func Test_TreeNode_Trim(t *testing.T) {
 			Right: nil,
 		}
 
+		assert.Equal(t, expected, node.TrimMut(2, 4))
 		assert.Equal(t, expected, node.Trim(2, 4))
 	})
 }

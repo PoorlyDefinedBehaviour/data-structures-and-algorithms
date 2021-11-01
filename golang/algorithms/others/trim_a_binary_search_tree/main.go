@@ -37,9 +37,28 @@ type TreeNode struct {
 
 // time O(n) where n is the number of nodes in the tree
 // space O(h) where h is the height of the tree
-func (node *TreeNode) Trim(low int, high int) *TreeNode {
+func (node *TreeNode) TrimMut(low int, high int) *TreeNode {
 	if node == nil {
 		return nil
+	}
+
+	if node.Value < low {
+		return node.Right.TrimMut(low, high)
+	}
+
+	if node.Value > high {
+		return node.Left.TrimMut(low, high)
+	}
+
+	node.Left = node.Left.TrimMut(low, high)
+	node.Right = node.Right.TrimMut(low, high)
+
+	return node
+}
+
+func (node *TreeNode) Trim(low int, high int) *TreeNode {
+	if node == nil {
+		return node
 	}
 
 	if node.Value < low {
@@ -50,10 +69,11 @@ func (node *TreeNode) Trim(low int, high int) *TreeNode {
 		return node.Left.Trim(low, high)
 	}
 
-	node.Left = node.Left.Trim(low, high)
-	node.Right = node.Right.Trim(low, high)
-
-	return node
+	return &TreeNode{
+		Value: node.Value,
+		Left:  node.Left.Trim(low, high),
+		Right: node.Right.Trim(low, high),
+	}
 }
 
 func main() {
