@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 // 225. Implement Stack using Queues - https://leetcode.com/problems/implement-stack-using-queues/
 //
 // Implement a last-in-first-out (LIFO) stack using only two queues.
@@ -15,17 +17,19 @@
 //     You must use only standard operations of a queue, which means that only push to back, peek/pop from front, size and is empty operations are valid.
 // Depending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue) as long as you use only a queue's standard operations.
 struct Stack<T> {
-    queue: Vec<T>,
+    queue: VecDeque<T>,
 }
 
 impl<T> Stack<T> {
     pub fn new() -> Self {
-        Self { queue: Vec::new() }
+        Self {
+            queue: VecDeque::new(),
+        }
     }
 
     // time O(1)
     pub fn push(&mut self, value: T) {
-        self.queue.push(value);
+        self.queue.push_back(value);
     }
 
     // time O(n)
@@ -34,11 +38,11 @@ impl<T> Stack<T> {
             return None;
         }
 
-        let value = self.queue.pop();
+        let value = self.queue.pop_back();
 
         for _ in 0..self.queue.len() {
-            let value = self.queue.pop().unwrap();
-            self.queue.push(value);
+            let value = self.queue.pop_front().unwrap();
+            self.queue.push_back(value);
         }
 
         value
@@ -46,7 +50,7 @@ impl<T> Stack<T> {
 
     // time O(1)
     pub fn top(&self) -> Option<&T> {
-        self.queue.last()
+        self.queue.back()
     }
 
     // time O(1)
@@ -61,10 +65,14 @@ fn main() {
     stack.push(1);
     stack.push(2);
 
+    dbg!(stack.is_empty());
+
     dbg!(stack.top());
     dbg!(stack.pop());
     dbg!(stack.top());
     dbg!(stack.pop());
     dbg!(stack.top());
     dbg!(stack.pop());
+
+    dbg!(stack.is_empty());
 }
