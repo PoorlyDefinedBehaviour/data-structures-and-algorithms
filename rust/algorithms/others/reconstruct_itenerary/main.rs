@@ -35,7 +35,7 @@ use std::collections::{HashMap, HashSet};
 //     fromi and toi consist of uppercase English letters.
 //     fromi != toi
 
-// time O(v + e)
+// time O((v + e)^2)
 //  where v is the number of vertices in the adjacency list
 //  and e is the number of edges.
 // space O(n) where n is the number of tickets.
