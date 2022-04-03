@@ -29,7 +29,7 @@
 /// Compute the product of the elements to the left of nums[i]
 /// and then compute the product to the elements to the right of nums[i].
 /// The product of nums except nums[i] is the product of the elements
-/// elements to the left os nums[i] * the product of the elements to the right
+/// elements to the left of nums[i] * the product of the elements to the right
 /// of nums[i].
 ///
 /// time O(n)
