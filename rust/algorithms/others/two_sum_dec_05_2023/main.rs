@@ -1,38 +1,39 @@
+use std::collections::HashMap;
+
 /// time O(n)
-/// space O(1)
-fn is_anagram(s: &str, t: &str) -> bool {
-    if s.len() != t.len() {
-        return false;
+/// space O(n)
+fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+    let mut cache = HashMap::new();
+
+    for (i, num) in nums.into_iter().enumerate() {
+        let n = (target - num).abs();
+
+        if let Some(j) = cache.get(&n) {
+            return vec![*j, i as i32];
+        }
+
+        cache.insert(num, i as i32);
     }
 
-    let mut count = [0_isize; 26];
-
-    let a_ascii_number = 'a' as u32;
-
-    for (s_letter, t_letter) in s.chars().zip(t.chars()) {
-        count[(s_letter as u32 - a_ascii_number) as usize] += 1;
-        count[(t_letter as u32 - a_ascii_number) as usize] -= 1;
-    }
-
-    count.into_iter().all(|n| n == 0)
+    unreachable!()
 }
 
 fn main() {}
 
 #[cfg(test)]
 mod tests {
-    use crate::is_anagram;
+    use crate::two_sum;
 
     #[test]
-    fn test_is_anagram() {
+    fn test_two_sum() {
         let cases = [
-            ("", "", true),
-            ("anagram", "nagaram", true),
-            ("rat", "car", false),
+            (vec![2, 7, 11, 15], 9, vec![0, 1]),
+            (vec![3, 2, 4], 6, vec![1, 2]),
+            (vec![3, 3], 6, vec![0, 1]),
         ];
 
-        for (s, t, expected) in cases {
-            assert_eq!(expected, is_anagram(s, t));
+        for (nums, target, expected) in cases {
+            assert_eq!(expected, two_sum(nums, target));
         }
     }
 }
