@@ -4,7 +4,7 @@ struct Split<'input> {
     input: &'input str,
     delimiter: char,
     start: usize,
-    iter: Peekable<Chars<'input>>,
+    iter: Chars<'input>,
     at_delimiter: bool,
 }
 
@@ -14,7 +14,7 @@ impl<'input> Split<'input> {
             input,
             delimiter,
             start: 0,
-            iter: input.chars().peekable(),
+            iter: input.chars(),
             at_delimiter: false,
         }
     }
